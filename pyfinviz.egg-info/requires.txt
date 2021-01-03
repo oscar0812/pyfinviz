@@ -1,0 +1,6 @@
+validators
+beautifulsoup4
+free-proxy
+pandas
+lxml
+requests

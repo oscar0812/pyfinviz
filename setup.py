@@ -1,10 +1,4 @@
-from distutils.core import setup
-
-try:
-    import pypandoc
-    long_description = pypandoc.convert('README.md', 'rst')
-except(IOError, ImportError):
-    long_description = open('README.md').read()
+from setuptools import setup, Extension
 
 setup(
     name='pyfinviz',  # How you named your package folder (MyLib)
@@ -12,7 +6,6 @@ setup(
     version='0.3',  # Start with a small number and increase it with every change you make
     license='apache-2.0',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='Scrape data from finviz.com',  # Give a short description about your library
-    long_description=long_description,
     author='Oscar R. Torres',  # Type in your name
     author_email='oscar0812torres@gmail.com',  # Type in your E-Mail
     url='https://github.com/oscar0812/pyfinviz',  # Provide either the link to your github or to your website
