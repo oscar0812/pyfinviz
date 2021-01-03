@@ -4,6 +4,15 @@ This package uses a fixed set of parameter options so you don't have to memorize
 All methods return a pandas.DataFrame object.
 
 ## Usage
+### News
+Information from https://finviz.com/news.ashx. Returns 2 pd.DataFrame objects (news, blogs)
+```python
+from pyfinviz.news import News
+
+news_df, blogs_df = News.fetch()
+print(news_df)
+```
+
 ### Cryto
 Information from https://finviz.com/crypto_performance.ashx. 
 Uses relative performance options (D, W, M, MTD, Q, HY, Y, YTD)
@@ -14,6 +23,23 @@ from pyfinviz.crypto import Crypto
 table_info = Crypto.fetch()
 # with params
 table_info = Crypto.fetch(relative_performance_option=Crypto.RelativePerformanceOption.ONE_YEAR)
+```
+pandas output:
+```
+       Time  ...                                                URL
+0   04:00PM  ...  https://www.wsj.com/articles/mgm-seeks-to-buy-...
+1   03:34PM  ...  https://www.bloomberg.com/news/articles/2021-0...
+2   03:21PM  ...  https://www.nytimes.com/2021/01/03/business/me...
+3   03:14PM  ...  https://www.nytimes.com/2021/01/03/technology/...
+4   02:42PM  ...  https://finance.yahoo.com/news/georgia-senate-...
+..      ...  ...                                                ...
+85   Jan-01  ...  https://www.bloomberg.com/news/articles/2021-0...
+86   Jan-01  ...  https://www.reuters.com/article/india-stocks/i...
+87   Jan-01  ...  https://www.reuters.com/article/china-economy-...
+88   Jan-01  ...  https://www.reuters.com/article/india-stocks/i...
+89   Jan-01  ...  https://www.reuters.com/article/usa-china-nyse...
+
+[90 rows x 3 columns]
 ```
 
 ### Groups
@@ -101,7 +127,7 @@ table_info = Screener.fetch(filter_options=options, view_option=Screener.ViewOpt
 Webpage from previous fetch:
 ![picture alt](images/screener1.png "Title is optional")
 
-pandas output (table_info var):
+pandas output:
 ```
     No Ticker MarketCap     PE  ... Salespast5Y   Price  Change     Volume
 0    1   ACIW     4.43B  75.21  ...       4.40%   38.43  -0.16%    608,554
@@ -169,6 +195,5 @@ pandas output (table_info var):
 ```
 
 ## ISSUES:
-* Missing endpoint for https://finviz.com/news.ashx
 * No PyPI hosting
 * More?

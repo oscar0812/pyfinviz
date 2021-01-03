@@ -1,4 +1,4 @@
-from pyfinviz.quote import Quote
+from pyfinviz.news import News
 
 if __name__ == '__main__':
     '''
@@ -7,19 +7,8 @@ if __name__ == '__main__':
     sd.to_csv('screener.csv')
     '''
 
-    quote = Quote.fetch("AMZN")
-    if quote.exists:
-        print(quote.insider_trading_df)
-        quote.exists
-        quote.ticker
-        quote.exchange
-        quote.company_name
-        quote.sectors
-        quote.fundamental_df
-        quote.outer_ratings_df
-        quote.outer_news_df
-        quote.income_statement_df
-        quote.insider_trading_df
+    news_df, blogs_df = News.fetch()
+    print(news_df)
 
     '''
     sd = pd.read_csv('screener.csv')
