@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: pyfinviz
-Version: 0.3
+Version: 0.4
 Summary: Scrape data from finviz.com
 Home-page: https://github.com/oscar0812/pyfinviz
 Author: Oscar R. Torres
 Author-email: oscar0812torres@gmail.com
 License: apache-2.0
-Download-URL: https://github.com/oscar0812/pyfinviz/archive/v_03.tar.gz
+Download-URL: https://github.com/oscar0812/pyfinviz/archive/v_04.tar.gz
 Description: # pyfinviz
         A python package to scrape data from finviz.com (inspired by https://github.com/lit26/finvizfinance).
         This package uses a fixed set of parameter options so you don't have to memorize them. 
@@ -14,7 +14,7 @@ Description: # pyfinviz
         
         ### Install
         ```
-        pip install pyfinviz==0.2
+        pip install pyfinviz
         ```
         
         ## Usage

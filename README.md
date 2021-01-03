@@ -198,7 +198,3 @@ pandas output:
 
 [60 rows x 18 columns]
 ```
-
-## ISSUES:
-* No PyPI hosting
-* More?
