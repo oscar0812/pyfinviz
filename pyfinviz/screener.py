@@ -4,7 +4,7 @@ from typing import List
 from pyfinviz.utils import WebScraper
 
 
-class ScreenerDescriptive:
+class Screener:
     class ScreenerFilterOption:
         ALL = ""
 
@@ -1815,6 +1815,10 @@ class ScreenerDescriptive:
     @staticmethod
     def fetch(filter_options: List[ScreenerFilterOption] = None,
               view_option: ViewOption = ViewOption.OVERVIEW, pages=None):
+
+        if filter_options is None:
+            filter_options = []
+
         if pages is None:
             pages = [1]
 
@@ -1831,58 +1835,9 @@ class ScreenerDescriptive:
 
         main_url += f_str.strip().replace(" ", ",") + "&r="
 
-        main_dataframe = WebScraper.get_single_table_pandas(main_url+ScreenerDescriptive.page_number(pages[0]))
+        main_dataframe = WebScraper.get_single_table_pandas(main_url + Screener.page_number(pages[0]))
         for page_number in pages[1:]:
-            url_ = main_url + ScreenerDescriptive.page_number(page_number)
+            url_ = main_url + Screener.page_number(page_number)
             main_dataframe = WebScraper.get_single_table_pandas(url_, main_dataframe)
 
         return main_dataframe
-
-
-'''
-var jq = document.createElement('script');
-jq.src = "https://code.jquery.com/jquery-3.1.1.min.js";
-jq.onload = function(){ 
-	jQuery.noConflict();
-}
-document.getElementsByTagName('head')[0].appendChild(jq);
-
-trs = jQuery('.screener-combo-title').eq(0).closest('tbody').eq(0)
-titles = trs.find('.screener-combo-title')
-selects = trs.find('select')
-
-final_str = ""
-
-for(var i =0; i<titles.length; i++) {
-    title = titles.eq(i)
-    select = selects.eq(i)
-    df = select.attr('data-filter')
-    
-    t = title.text().replace(/[\W_]+/g,"")
-    if(t.match(/^\d/)) {
-        t = "_"+t
-    }
-
-    final_str+= "class "+t+"Option(ParentOption, Enum):\n"
-
-    jQuery.each(select.find('option'), function(i, v) {
-        v = jQuery(v)
-        val = v.attr('value')
-        if(val == "") {
-            url = ""
-        } else {
-            url = df + "_" + val
-        }
-
-        var_name = v.text().replace(/\$/, "USD").replace(/%/g, "_percent").replace(/&/g, "and").trim().replace(/[\W_]+/g," ").trim().replace(/ /g,"_").toUpperCase();
-        if(var_name != "ANY") {
-            if(var_name[0] >= '0' && var_name[0] <= '9') {
-                var_name = "_"+var_name
-            }
-            final_str += "\t"+var_name+" = \""+url+"\"\n"
-        }
-    })
-}
-
-console.log(final_str)
-'''

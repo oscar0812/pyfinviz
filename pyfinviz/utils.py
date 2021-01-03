@@ -21,10 +21,10 @@ class WebScraper:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                  'Chrome/87.0.4280.88 Safari/537.36'}
         if use_proxy:
-            response = requests.get(main_url, headers=headers)
-        else:
             p = WebScraper.get_proxy()
             response = requests.get(main_url, headers=headers, proxies={'http': p, 'https': p})
+        else:
+            response = requests.get(main_url, headers=headers)
 
         return BeautifulSoup(response.content, 'lxml')
 

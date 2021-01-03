@@ -23,6 +23,7 @@ class Groups:
         OVERVIEW = "110"
         VALUATION = "120"
         PERFORMANCE = "140"
+        CUSTOM = "150"
 
     @staticmethod
     def fetch(group_option: GroupOption = GroupOption.SECTOR,
