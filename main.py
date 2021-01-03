@@ -7,9 +7,6 @@ if __name__ == '__main__':
     sd.to_csv('screener.csv')
     '''
 
-    news_df, blogs_df = News.fetch()
-    print(news_df)
-
     '''
     sd = pd.read_csv('screener.csv')
     sort_by = 'EPSthisY'
