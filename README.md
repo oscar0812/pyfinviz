@@ -12,18 +12,6 @@ from pyfinviz.news import News
 news_df, blogs_df = News.fetch()
 print(news_df)
 ```
-
-### Cryto
-Information from https://finviz.com/crypto_performance.ashx. 
-Uses relative performance options (D, W, M, MTD, Q, HY, Y, YTD)
-```python
-from pyfinviz.crypto import Crypto
-
-# with no params (SECTOR, OVERVIEW by default)
-table_info = Crypto.fetch()
-# with params
-table_info = Crypto.fetch(relative_performance_option=Crypto.RelativePerformanceOption.ONE_YEAR)
-```
 pandas output:
 ```
        Time  ...                                                URL
@@ -40,6 +28,18 @@ pandas output:
 89   Jan-01  ...  https://www.reuters.com/article/usa-china-nyse...
 
 [90 rows x 3 columns]
+```
+
+### Cryto
+Information from https://finviz.com/crypto_performance.ashx. 
+Uses relative performance options (D, W, M, MTD, Q, HY, Y, YTD)
+```python
+from pyfinviz.crypto import Crypto
+
+# with no params (SECTOR, OVERVIEW by default)
+table_info = Crypto.fetch()
+# with params
+table_info = Crypto.fetch(relative_performance_option=Crypto.RelativePerformanceOption.ONE_YEAR)
 ```
 
 ### Groups
