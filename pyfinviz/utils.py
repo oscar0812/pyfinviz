@@ -17,7 +17,7 @@ class WebScraper:
         return proxy
 
     @staticmethod
-    def get_soup(main_url, use_proxy=False):
+    def get_soup(main_url, use_proxy=False, remove_imports=True):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                  'Chrome/87.0.4280.88 Safari/537.36'}
         if use_proxy:
@@ -26,7 +26,18 @@ class WebScraper:
         else:
             response = requests.get(main_url, headers=headers)
 
-        return BeautifulSoup(response.content, 'lxml')
+        soup = BeautifulSoup(response.content, 'lxml')
+        if remove_imports:
+            for script in soup(["script", "style"]):  # remove all javascript and stylesheet code
+                script.extract()
+        return soup
+
+    @staticmethod
+    def get_json(url):
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                                 'Chrome/87.0.4280.88 Safari/537.36'}
+
+        return requests.get(url, headers=headers).json()
 
     '''
     SOME PAGES ONLY HAVE 1 TABLE PER PAGE.

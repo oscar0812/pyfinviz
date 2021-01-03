@@ -42,6 +42,49 @@ table_info = Insider.fetch()
 table_info = Insider.fetch(filter_option=Insider.FilterOption.BUY)
 ```
 
+### Quote
+Information from https://finviz.com/quote.ashx. The Quote class grabs all the information, 
+creates an object and returns it. Variable names that end in _df are pd.DataFrame objects.
+```python
+from pyfinviz.quote import Quote
+
+quote = Quote.fetch("AMZN")
+if quote.exists:
+    print(quote.insider_trading_df)
+    '''
+    quote variables:
+        quote.exists
+        quote.ticker
+        quote.exchange
+        quote.company_name
+        quote.sectors
+        quote.fundamental_df
+        quote.outer_ratings_df
+        quote.outer_news_df
+        quote.income_statement_df
+        quote.insider_trading_df
+    '''
+```
+
+pandas output:
+```
+          Insider Trading  ...                                     SEC Form 4 URL
+0         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+1         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+2   Huttenlocher Daniel P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+3         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+4          Jassy Andrew R  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+..                    ...  ...                                                ...
+91         Jassy Andrew R  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+92        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+93        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+94        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+95        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+
+[96 rows x 11 columns]
+```
+
+
 ### Screener
 Information from https://finviz.com/screener.ashx?ft=4. The Screener class uses 
 ALL the options (dropdowns) in the webpage mentioned in the last sentence (over 60), and uses
@@ -126,7 +169,6 @@ pandas output (table_info var):
 ```
 
 ## ISSUES:
-* Missing endpoint for https://finviz.com/quote.ashx
 * Missing endpoint for https://finviz.com/news.ashx
 * No PyPI hosting
 * More?

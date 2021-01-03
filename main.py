@@ -1,4 +1,4 @@
-from pyfinviz.screener import Screener
+from pyfinviz.quote import Quote
 
 if __name__ == '__main__':
     '''
@@ -7,12 +7,20 @@ if __name__ == '__main__':
     sd.to_csv('screener.csv')
     '''
 
-    # with no params (default screener table)
-    table_info = Screener.fetch()
-    # with params (The first 3 pages of "Screen Aerospace and Defense" where Analyst recommend a strong buy)
-    options = [Screener.IndustryOption.STOCKS_ONLY_EX_FUNDS, Screener.AnalystRecomOption.STRONG_BUY_1]
-    table_info = Screener.fetch(filter_options=options, view_option=Screener.ViewOption.VALUATION, pages=[x for x in range(1, 4)])
-    print(table_info)
+    quote = Quote.fetch("AMZN")
+    if quote.exists:
+        print(quote.insider_trading_df)
+        quote.exists
+        quote.ticker
+        quote.exchange
+        quote.company_name
+        quote.sectors
+        quote.fundamental_df
+        quote.outer_ratings_df
+        quote.outer_news_df
+        quote.income_statement_df
+        quote.insider_trading_df
+
     '''
     sd = pd.read_csv('screener.csv')
     sort_by = 'EPSthisY'
