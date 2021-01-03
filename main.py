@@ -12,8 +12,7 @@ if __name__ == '__main__':
     # with params (The first 3 pages of "Screen Aerospace and Defense" where Analyst recommend a strong buy)
     options = [Screener.IndustryOption.STOCKS_ONLY_EX_FUNDS, Screener.AnalystRecomOption.STRONG_BUY_1]
     table_info = Screener.fetch(filter_options=options, view_option=Screener.ViewOption.VALUATION, pages=[x for x in range(1, 4)])
-
-    a = 1
+    print(table_info)
     '''
     sd = pd.read_csv('screener.csv')
     sort_by = 'EPSthisY'
