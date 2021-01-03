@@ -5,7 +5,7 @@ All methods return a pandas.DataFrame object.
 
 ### Install
 ```
-pip install pyfinviz==0.2
+pip install pyfinviz
 ```
 
 ## Usage
