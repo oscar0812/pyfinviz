@@ -45,7 +45,7 @@ table_info = Insider.fetch(filter_option=Insider.FilterOption.BUY)
 ### Screener
 Information from https://finviz.com/screener.ashx?ft=4. The Screener class uses 
 ALL the options (dropdowns) in the webpage mentioned in the last sentence (over 60), and uses
-view options (OVERVIEW, VALUATION, ..., CUSTOM)
+view options (OVERVIEW, VALUATION, ..., CUSTOM). You can also specify a range of pages to fetch.
 ```python
 from pyfinviz.screener import Screener
 
