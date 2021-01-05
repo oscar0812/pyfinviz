@@ -1812,9 +1812,8 @@ class Screener:
         """
         return str((n - 1) * 20 + 1)
 
-    @staticmethod
-    def fetch(filter_options: List[ScreenerFilterOption] = None,
-              view_option: ViewOption = ViewOption.OVERVIEW, pages=None):
+    def __init__(self, filter_options: List[ScreenerFilterOption] = None,
+                 view_option: ViewOption = ViewOption.OVERVIEW, pages=None):
 
         if filter_options is None:
             filter_options = []
@@ -1822,7 +1821,7 @@ class Screener:
         if pages is None:
             pages = [1]
 
-        main_url = "https://finviz.com/screener.ashx?ft=4&v=" + view_option.value + "&f="
+        self.main_url = "https://finviz.com/screener.ashx?ft=4&v=" + view_option.value + "&f="
         # check if the same enum was used twice
         enums = {}
         for e in filter_options:
@@ -1833,11 +1832,13 @@ class Screener:
             e = enums[key]
             f_str += (e.value + " ")
 
-        main_url += f_str.strip().replace(" ", ",") + "&r="
+        self.main_url += f_str.strip().replace(" ", ",") + "&r="
 
-        main_dataframe = WebScraper.get_single_table_pandas(main_url + Screener.page_number(pages[0]))
+        self.soups = {x: None for x in pages}
+        self.data_frames = {x: None for x in pages}
+
+        self.soups[0], self.data_frames[0] = WebScraper.get_single_table_pandas(self.main_url + Screener.page_number(pages[0]))
+
         for page_number in pages[1:]:
-            url_ = main_url + Screener.page_number(page_number)
-            main_dataframe = WebScraper.get_single_table_pandas(url_, main_dataframe)
-
-        return main_dataframe
+            url_ = self.main_url + Screener.page_number(page_number)
+            self.soups[page_number], self.data_frames[page_number] = WebScraper.get_single_table_pandas(url_)

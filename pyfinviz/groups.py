@@ -25,8 +25,7 @@ class Groups:
         PERFORMANCE = "140"
         CUSTOM = "150"
 
-    @staticmethod
-    def fetch(group_option: GroupOption = GroupOption.SECTOR,
-              view_option: ViewOption = ViewOption.OVERVIEW):
-        main_url = 'https://finviz.com/groups.ashx?' + group_option.value + '&v=' + view_option.value
-        return WebScraper.get_single_table_pandas(main_url)
+    def __init__(self, group_option: GroupOption = GroupOption.SECTOR,
+                 view_option: ViewOption = ViewOption.OVERVIEW):
+        self.main_url = 'https://finviz.com/groups.ashx?' + group_option.value + '&v=' + view_option.value
+        self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)

@@ -45,16 +45,13 @@ class WebScraper:
     '''
 
     @staticmethod
-    def get_single_table_pandas(main_url, old_pd_df: pd.DataFrame = None):
-        td = WebScraper.get_soup(main_url).find("td", {"class": "table-top"})
+    def get_single_table_pandas(main_url):
+        soup = WebScraper.get_soup(main_url)
+        td = soup.find("td", {"class": "table-top"})
         main_table_rows = td.find_parent("table").find_all("tr")
         table_header = [re.sub(r'[^a-zA-Z0-9]', '', td.text.strip()) for td in
                         main_table_rows[0].find_all("td", recursive=False)]
         table_info_array = np.asarray(
             [[td.text.strip() for td in row.find_all("td", recursive=False)] for row in main_table_rows[1:]])
 
-        new_df = pd.DataFrame(table_info_array, columns=table_header)
-        if old_pd_df is None:
-            return new_df
-        else:
-            return old_pd_df.append(new_df)
+        return soup, pd.DataFrame(table_info_array, columns=table_header)

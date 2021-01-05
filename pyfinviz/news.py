@@ -15,12 +15,15 @@ class News:
             td_a = tds[len(tds)-1].find('a')
             info.append({'Time': tds[1].text, 'Headline': td_a.text, 'URL': td_a['href']})
 
-        return pd.DataFrame.from_dict(info)
+        return pd.DataFrame(info)
 
-    @staticmethod
-    def fetch():
-        main_url = 'https://finviz.com/news.ashx'
-        div_ = WebScraper.get_soup(main_url).find('div', class_='news').find('table')
+    def __init__(self):
+        self.main_url = 'https://finviz.com/news.ashx'
+        self.soup = WebScraper.get_soup(self.main_url)
+
+        div_ = self.soup.find('div', class_='news').find('table')
         trs_ = div_.find_all('tr', recursive=False)
         main_tables = trs_[len(trs_)-1].find_all('table')
-        return News.__table_to_df__(main_tables[0]), News.__table_to_df__(main_tables[1])
+
+        self.news_df = News.__table_to_df__(main_tables[0])
+        self.blogs_df = News.__table_to_df__(main_tables[1])
