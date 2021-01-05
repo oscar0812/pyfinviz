@@ -5,19 +5,6 @@ from pyfinviz.utils import WebScraper
 
 class Quote:
 
-    def __init__(self, ticker, exchange, company_name, sectors, fundamental_df, outer_ratings_df, outer_news_df,
-                 income_statement_df, insider_trading_df):
-        self.exists = ticker is not None
-        self.ticker = ticker
-        self.exchange = exchange
-        self.company_name = company_name
-        self.sectors = sectors
-        self.fundamental_df = fundamental_df
-        self.outer_ratings_df = outer_ratings_df
-        self.outer_news_df = outer_news_df
-        self.income_statement_df = income_statement_df
-        self.insider_trading_df = insider_trading_df
-
     @staticmethod
     def __get_outer_ratings_df__(soup):
         outer_ratings_table = soup.find('table', class_='fullview-ratings-outer')
@@ -33,7 +20,7 @@ class Quote:
             o_tds_text = [td.text for td in tr.find_all('td')[1:]]
             outer_ratings_info.append({tags__[i]: o_tds_text[i] for i in range(0, len(tags__))})
 
-        return pd.DataFrame.from_dict(outer_ratings_info)
+        return pd.DataFrame(outer_ratings_info)
 
     @staticmethod
     def __get_outer_news_df__(soup):
@@ -59,7 +46,7 @@ class Quote:
             info_ = [date_, news_a.text, news_a['href'], news_from.text]
             outer_news_info.append({tags__[i]: info_[i] for i in range(0, len(tags__))})
 
-        return pd.DataFrame.from_dict(outer_news_info)
+        return pd.DataFrame(outer_news_info)
 
     @staticmethod
     def __get_XHR_requests__(ticker):
@@ -95,37 +82,34 @@ class Quote:
 
             insider_trading_info.append({tags__[i]: info_[i] for i in range(0, len(tags__))})
 
-        return pd.DataFrame.from_dict(insider_trading_info)
+        return pd.DataFrame(insider_trading_info)
 
-    @staticmethod
-    def fetch(ticker="FB"):
+    def __init__(self, ticker="FB"):
         main_url = 'https://finviz.com/quote.ashx?t=' + ticker
-        soup = WebScraper.get_soup(main_url)
+        self.soup = WebScraper.get_soup(main_url)
 
         # base info
-        full_title = soup.find('table', class_='fullview-title')
+        full_title = self.soup.find('table', class_='fullview-title')
+        self.exists = full_title is not None
 
         if full_title is None:
             # Doesn't exist
-            return Quote(None, None, None, None, None, None, None, None, None)
+            return
 
         trs = full_title.find_all('tr', recursive=False)
-        ticker_ = trs[0].find(id="ticker").text
-        exchange_ = trs[0].find('span').text
-        company_name_ = trs[1].text
-        sectors_ = [x.strip() for x in trs[2].text.split('|')]
+        self.ticker = trs[0].find(id="ticker").text
+        self.exchange = trs[0].find('span').text
+        self.company_name = trs[1].text
+        self.sectors = [x.strip() for x in trs[2].text.split('|')]
 
         # fundament table (the table with index, market cap, etc.)
-        fundamental_tds = soup.find('table', class_='snapshot-table2').find_all('td')
+        fundamental_tds = self.soup.find('table', class_='snapshot-table2').find_all('td')
 
-        # convert dict to dataframe (only 1 key per value so have to implement like this)
-        fundamental_df = pd.DataFrame(list({fundamental_tds[index].text: fundamental_tds[index + 1].text for index in
-                                            range(0, len(fundamental_tds) - 1, 2)}.items()), columns=['name', 'value'])
+        self.fundamental_df = pd.DataFrame.from_dict(
+            {fundamental_tds[index].text: [fundamental_tds[index + 1].text] for index in
+             range(0, len(fundamental_tds) - 1, 2)})
 
-        outer_ratings_df = Quote.__get_outer_ratings_df__(soup)
-        outer_news_df = Quote.__get_outer_news_df__(soup)
-        income_statement_df, balance_sheet_df, cash_flow_df = Quote.__get_XHR_requests__(ticker)
-        insider_trading_df = Quote.__get_insider_trading_df__(soup)
-
-        return Quote(ticker_, exchange_, company_name_, sectors_, fundamental_df, outer_ratings_df, outer_news_df,
-                     income_statement_df, insider_trading_df)
+        self.outer_ratings_df = Quote.__get_outer_ratings_df__(self.soup)
+        self.outer_news_df = Quote.__get_outer_news_df__(self.soup)
+        self.income_statement_df, self.balance_sheet_df, self.cash_flow_df = Quote.__get_XHR_requests__(ticker)
+        self.insider_trading_df = Quote.__get_insider_trading_df__(self.soup)

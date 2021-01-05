@@ -1,7 +1,7 @@
 # pyfinviz
-A python package to scrape data from finviz.com (inspired by https://github.com/lit26/finvizfinance).
+A python package that scrapes data from finviz.com and utilizes the pandas module 
+(inspired by https://github.com/lit26/finvizfinance).
 This package uses a fixed set of parameter options so you don't have to memorize them. 
-All methods return a pandas.DataFrame object.
 
 ### Install
 ```
@@ -10,29 +10,17 @@ pip install pyfinviz
 
 ## Usage
 ### News
-Information from https://finviz.com/news.ashx. Returns 2 pd.DataFrame objects (news, blogs)
+Information from https://finviz.com/news.ashx.
 ```python
 from pyfinviz.news import News
 
-news_df, blogs_df = News.fetch()
-print(news_df)
-```
-pandas output:
-```
-       Time  ...                                                URL
-0   04:00PM  ...  https://www.wsj.com/articles/mgm-seeks-to-buy-...
-1   03:34PM  ...  https://www.bloomberg.com/news/articles/2021-0...
-2   03:21PM  ...  https://www.nytimes.com/2021/01/03/business/me...
-3   03:14PM  ...  https://www.nytimes.com/2021/01/03/technology/...
-4   02:42PM  ...  https://finance.yahoo.com/news/georgia-senate-...
-..      ...  ...                                                ...
-85   Jan-01  ...  https://www.bloomberg.com/news/articles/2021-0...
-86   Jan-01  ...  https://www.reuters.com/article/india-stocks/i...
-87   Jan-01  ...  https://www.reuters.com/article/china-economy-...
-88   Jan-01  ...  https://www.reuters.com/article/india-stocks/i...
-89   Jan-01  ...  https://www.reuters.com/article/usa-china-nyse...
+news = News()
 
-[90 rows x 3 columns]
+# available variables:
+print(news.main_url)  # scraped URL
+print(news.soup)  # beautiful soup object
+print(news.news_df)  # NEWS table information in a pd.DataFrame object
+print(news.blogs_df)  # BLOGS table information in a pd.DataFrame object
 ```
 
 ### Cryto
@@ -42,23 +30,34 @@ Uses relative performance options (D, W, M, MTD, Q, HY, Y, YTD)
 from pyfinviz.crypto import Crypto
 
 # with no params (SECTOR, OVERVIEW by default)
-table_info = Crypto.fetch()
+crypto = Crypto()
 # with params
-table_info = Crypto.fetch(relative_performance_option=Crypto.RelativePerformanceOption.ONE_YEAR)
+crypto = Crypto(relative_performance_option=Crypto.RelativePerformanceOption.ONE_YEAR)
+
+# available variables:
+print(crypto.main_url)  # scraped URL
+print(crypto.soup)  # beautiful soup object
+print(crypto.table_df)  # table information in a pd.DataFrame object
 ```
 
 ### Groups
 Information from https://finviz.com/groups.ashx. Uses group options 
-(Sector, Industry..., Capitalization) and view options (Overview, Valuation, Performace, Custom)
+(Sector, Industry..., Capitalization) and view options (Overview, Valuation, Performance, Custom)
 ```python
 from pyfinviz.groups import Groups
 
 # with no params (sector overview)
-table_info = Groups.fetch()
+groups = Groups()
 # with params (View the group VALUATION of the INDUSTRY sector)
-table_info = Groups.fetch(group_option=Groups.GroupOption.INDUSTRY, view_option=Groups.ViewOption.VALUATION)
+groups = Groups(group_option=Groups.GroupOption.INDUSTRY, view_option=Groups.ViewOption.VALUATION)
 # with params (View the group PERFORMANCE of the TECH sector)
-table_info = Groups.fetch(group_option=Groups.GroupOption.INDUSTRY_TECHNOLOGY, view_option=Groups.ViewOption.PERFORMANCE)
+groups = Groups(group_option=Groups.GroupOption.INDUSTRY_TECHNOLOGY,
+                view_option=Groups.ViewOption.PERFORMANCE)
+
+# available variables:
+print(groups.main_url)  # scraped URL
+print(groups.soup)  # beautiful soup object
+print(groups.table_df)  # table information in a pd.DataFrame object
 ```
 
 ### Insider
@@ -68,9 +67,14 @@ Information from https://finviz.com/insidertrading.ashx. Uses filter options
 from pyfinviz.insider import Insider
 
 # with no params (ALL the LATEST insider trades)
-table_info = Insider.fetch()
+insider = Insider()
 # with params (the LATEST BUY insider trades)
-table_info = Insider.fetch(filter_option=Insider.FilterOption.BUY)
+insider = Insider(filter_option=Insider.FilterOption.BUY)
+
+# available variables:
+print(insider.main_url)  # scraped URL
+print(insider.soup)  # beautiful soup object
+print(insider.table_df)  # table information in a pd.DataFrame object
 ```
 
 ### Quote
@@ -79,42 +83,20 @@ creates an object and returns it. Variable names that end in _df are pd.DataFram
 ```python
 from pyfinviz.quote import Quote
 
-quote = Quote.fetch("AMZN")
-if quote.exists:
-    print(quote.insider_trading_df)
-    '''
-    quote variables:
-        quote.exists
-        quote.ticker
-        quote.exchange
-        quote.company_name
-        quote.sectors
-        quote.fundamental_df
-        quote.outer_ratings_df
-        quote.outer_news_df
-        quote.income_statement_df
-        quote.insider_trading_df
-    '''
-```
+quote = Quote(ticker="AMZN")
 
-pandas output:
+# available variables:
+print(quote.exists)  # check if fetch was successful (STOCK may not exist)
+print(quote.ticker)  # AMZN
+print(quote.exchange)  # NASD
+print(quote.company_name)  # Amazon.com, Inc.
+print(quote.sectors)  # ['Consumer Cyclical', 'Internet Retail', 'USA']
+print(quote.fundamental_df)  # Index    P/E EPS (ttm) Insider Own  ...  SMA50  SMA200     Volume  Change
+print(quote.outer_ratings_df)  # 0   Nov-04-20     Upgrade  ...                Hold → Buy  $3360 → $4000
+print(quote.outer_news_df)  # 0   Jan-04-21 10:20PM  ...                   Bloomberg
+print(quote.income_statement_df)  # 1      12/31/2019  ...                    22.99206
+print(quote.insider_trading_df)  # 0         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
 ```
-          Insider Trading  ...                                     SEC Form 4 URL
-0         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-1         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-2   Huttenlocher Daniel P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-3         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-4          Jassy Andrew R  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-..                    ...  ...                                                ...
-91         Jassy Andrew R  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-92        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-93        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-94        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-95        BEZOS JEFFREY P  ...  http://www.sec.gov/Archives/edgar/data/1018724...
-
-[96 rows x 11 columns]
-```
-
 
 ### Screener
 Information from https://finviz.com/screener.ashx?ft=4. The Screener class uses 
@@ -124,10 +106,16 @@ view options (OVERVIEW, VALUATION, ..., CUSTOM). You can also specify a range of
 from pyfinviz.screener import Screener
 
 # with no params (default screener table)
-table_info = Screener.fetch()
+screener = Screener()
 # with params (The first 3 pages of "STOCKS ONLY" where Analyst recommend a strong buy)
 options = [Screener.IndustryOption.STOCKS_ONLY_EX_FUNDS, Screener.AnalystRecomOption.STRONG_BUY_1]
-table_info = Screener.fetch(filter_options=options, view_option=Screener.ViewOption.VALUATION, pages=[x for x in range(1, 4)])
+screener = Screener(filter_options=options, view_option=Screener.ViewOption.VALUATION,
+                    pages=[x for x in range(1, 4)])
+
+# available variables:
+print(screener.main_url)  # scraped URL
+print(screener.soups)  # beautiful soup object per page {1: soup, 2: soup, ...}
+print(screener.data_frames)  # table information in a pd.DataFrame object per page {1: table_df, 2, table_df, ...}
 ```
 Webpage from previous fetch:
 ![picture alt](images/screener1.png "Title is optional")
@@ -198,3 +186,5 @@ pandas output:
 
 [60 rows x 18 columns]
 ```
+
+If you like this project and would like to contribute please email me @ oscar0812torres@gmail.com

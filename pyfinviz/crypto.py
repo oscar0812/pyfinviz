@@ -13,7 +13,6 @@ class Crypto:
         ONE_YEAR = "6"
         YEAR_TO_DATE = "7"
 
-    @staticmethod
-    def fetch(relative_performance_option: RelativePerformanceOption = RelativePerformanceOption.ONE_DAY):
-        main_url = 'https://finviz.com/crypto_performance.ashx?v=' + relative_performance_option.value
-        return WebScraper.get_single_table_pandas(main_url)
+    def __init__(self, relative_performance_option: RelativePerformanceOption = RelativePerformanceOption.ONE_DAY):
+        self.main_url = 'https://finviz.com/crypto_performance.ashx?v=' + relative_performance_option.value
+        self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)

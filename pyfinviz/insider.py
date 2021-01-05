@@ -14,8 +14,7 @@ class Insider:
         BUY = "1"
         SELL = "2"
 
-    @staticmethod
-    def fetch(filter_option: FilterOption = FilterOption.ALL,
-              view_option: ViewOption = ViewOption.LATEST):
-        main_url = 'https://finviz.com/insidertrading.ashx?tc=' + filter_option.value + view_option.value
-        return WebScraper.get_single_table_pandas(main_url)
+    def __init__(self, filter_option: FilterOption = FilterOption.ALL,
+                 view_option: ViewOption = ViewOption.LATEST):
+        self.main_url = 'https://finviz.com/insidertrading.ashx?tc=' + filter_option.value + view_option.value
+        self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)
