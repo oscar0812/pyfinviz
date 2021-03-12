@@ -2,5 +2,6 @@ validators
 beautifulsoup4
 free-proxy
 pandas
-numpylxml
+numpy
+lxml
 requests
