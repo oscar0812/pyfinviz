@@ -6,7 +6,7 @@ Home-page: https://github.com/oscar0812/pyfinviz
 Author: Oscar R. Torres
 Author-email: oscar0812torres@gmail.com
 License: apache-2.0
-Download-URL: https://github.com/oscar0812/pyfinviz/archive/v_05.tar.gz
+Download-URL: https://github.com/oscar0812/pyfinviz/archive/v_06.tar.gz
 Description: # pyfinviz
         A python package that scrapes data from finviz.com and utilizes the pandas module 
         (inspired by https://github.com/lit26/finvizfinance).
