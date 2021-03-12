@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='pyfinviz',  # How you named your package folder (MyLib)
     packages=['pyfinviz'],  # Chose the same as "name"
-    version='0.5',  # Start with a small number and increase it with every change you make
+    version='0.6',  # Start with a small number and increase it with every change you make
     license='apache-2.0',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='Scrape data from finviz.com',  # Give a short description about your library
     author='Oscar R. Torres',  # Type in your name
