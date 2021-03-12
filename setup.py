@@ -16,7 +16,7 @@ setup(
         'beautifulsoup4',
         'free-proxy',
         'pandas',
-        'numpy'
+        'numpy',
         'lxml',
         'requests'
     ],
