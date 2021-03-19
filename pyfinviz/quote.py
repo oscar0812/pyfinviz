@@ -56,9 +56,21 @@ class Quote:
                            'cash_flow': WebScraper.get_json(s_u + 'CA')}
 
         # convert dict to dataframes
-        income_statement_df = pd.DataFrame.from_dict(statement_dicts['income_statement']['data'])
-        balance_sheet_df = pd.DataFrame.from_dict(statement_dicts['balance_sheet']['data'])
-        cash_flow_df = pd.DataFrame.from_dict(statement_dicts['cash_flow']['data'])
+        # issue 2: KeyError: 'data'
+        # solution: some tickers dont have XHR_request data, return None
+        income_statement_df = None
+        balance_sheet_df = None
+        cash_flow_df = None
+
+        if 'data' in statement_dicts['income_statement']:
+            income_statement_df = pd.DataFrame.from_dict(statement_dicts['income_statement']['data'])
+
+        if 'data' in statement_dicts['balance_sheet']:
+            balance_sheet_df = pd.DataFrame.from_dict(statement_dicts['balance_sheet']['data'])
+
+        if 'data' in statement_dicts['cash_flow']:
+            cash_flow_df = pd.DataFrame.from_dict(statement_dicts['cash_flow']['data'])
+
         return income_statement_df, balance_sheet_df, cash_flow_df
 
     @staticmethod
