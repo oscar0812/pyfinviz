@@ -1,6 +1,5 @@
 # pyfinviz
-A python package that scrapes data from finviz.com and utilizes the pandas module 
-(inspired by https://github.com/lit26/finvizfinance).
+A python package that scrapes data from finviz.com and utilizes the pandas module.
 This package uses a fixed set of parameter options so you don't have to memorize them. 
 
 ### Install
@@ -186,5 +185,3 @@ pandas output:
 
 [60 rows x 18 columns]
 ```
-
-If you like this project and would like to contribute please email me @ oscar0812torres@gmail.com
