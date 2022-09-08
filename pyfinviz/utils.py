@@ -51,7 +51,9 @@ class WebScraper:
         main_table_rows = td.find_parent("table").find_all("tr")
         table_header = [re.sub(r'[^a-zA-Z0-9]', '', td.text.strip()) for td in
                         main_table_rows[0].find_all("td", recursive=False)]
-        table_info_array = np.asarray(
-            [[td.text.strip() for td in row.find_all("td", recursive=False)] for row in main_table_rows[1:]])
+
+        table_info_arr = [[td.text.strip() for td in row.find_all("td", recursive=False)] for row in main_table_rows[1:]]
+        table_info_arr = [row for row in table_info_arr if len(row) == len(table_header)]  # removed unmatched rows
+        table_info_array = np.asarray(table_info_arr)
 
         return soup, pd.DataFrame(table_info_array, columns=table_header)

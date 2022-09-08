@@ -36,6 +36,8 @@ class Quote:
         prev_date = None
         for tr_ in outer_news_trs:
             o_tds = tr_.find_all('td', recursive=False)
+            if len(o_tds) < 2:
+                continue
             news_a = o_tds[1].find('a')
             news_from = o_tds[1].find('span')
             date_ = o_tds[0].text.strip()
