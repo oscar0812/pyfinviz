@@ -9,6 +9,7 @@ class Groups:
         INDUSTRY_BASIC_MATERIALS = INDUSTRY + '&sg=basicmaterials'
         INDUSTRY_COMMUNICATION_SERVICES = INDUSTRY + '&sg=communicationservices'
         INDUSTRY_CONSUMER_CYCLICAL = INDUSTRY + '&sg=consumercyclical'
+        INDUSTRY_CONSUMER_DEFENSIVE = INDUSTRY + '&sg=consumerdefensive'
         INDUSTRY_ENERGY = INDUSTRY + '&sg=energy'
         INDUSTRY_FINANCIAL = INDUSTRY + '&sg=financial'
         INDUSTRY_HEALTHCARE = INDUSTRY + '&sg=healthcare'
