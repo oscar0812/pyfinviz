@@ -13,7 +13,10 @@ class News:
         for tr in trs:
             tds = tr.find_all('td')
             td_a = tds[len(tds)-1].find('a')
-            info.append({'Time': tds[1].text, 'Headline': td_a.text, 'URL': td_a['href']})
+            if td_a is None:
+                continue
+            time = '' if len(tds) < 2 else tds[1].text
+            info.append({'Time': time, 'Headline': td_a.text, 'URL': td_a['href']})
 
         return pd.DataFrame(info)
 
