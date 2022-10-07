@@ -9,3 +9,5 @@ __pycache__/
 
 # User-specific stuff
 .idea/
+
+test.py
