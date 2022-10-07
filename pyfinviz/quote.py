@@ -39,6 +39,10 @@ class Quote:
             if len(o_tds) < 2:
                 continue
             news_a = o_tds[1].find('a')
+            if news_a is None:
+                # broken news
+                continue
+
             news_from = o_tds[1].find('span')
             date_ = o_tds[0].text.strip()
             if '-' not in date_:
