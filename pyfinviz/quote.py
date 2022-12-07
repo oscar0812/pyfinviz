@@ -18,7 +18,8 @@ class Quote:
         tags__ = ['Date', 'Status', 'Outer', 'Rating', 'Price']
         for tr in outer_ratings_trs:
             o_tds_text = [td.text for td in tr.find_all('td')[1:]]
-            outer_ratings_info.append({tags__[i]: o_tds_text[i] for i in range(0, len(tags__))})
+            if len(o_tds_text) == len(tags__):
+                outer_ratings_info.append({tags__[i]: o_tds_text[i] for i in range(0, len(tags__))})
 
         return pd.DataFrame(outer_ratings_info)
 
