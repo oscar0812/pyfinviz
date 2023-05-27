@@ -7,7 +7,7 @@ class Quote:
 
     @staticmethod
     def __get_outer_ratings_df__(soup):
-        outer_ratings_table = soup.find('table', class_='fullview-ratings-outer')
+        outer_ratings_table = soup.find('table', class_='js-table-ratings fullview-ratings-outer')
         # might not have outer ratings
         if outer_ratings_table is None:
             return None
@@ -16,8 +16,8 @@ class Quote:
 
         outer_ratings_info = []
         tags__ = ['Date', 'Status', 'Outer', 'Rating', 'Price']
-        for tr in outer_ratings_trs:
-            o_tds_text = [td.text for td in tr.find_all('td')[1:]]
+        for tr in outer_ratings_trs[1:]:
+            o_tds_text = [td.text for td in tr.find_all('td')]
             if len(o_tds_text) == len(tags__):
                 outer_ratings_info.append({tags__[i]: o_tds_text[i] for i in range(0, len(tags__))})
 
@@ -103,9 +103,8 @@ class Quote:
 
         return pd.DataFrame(insider_trading_info)
 
-    def __init__(self, ticker="FB"):
-        main_url = 'https://finviz.com/quote.ashx?t=' + ticker
-        self.soup = WebScraper.get_soup(main_url)
+    def __init__(self, ticker="META"):
+        self.soup = WebScraper.get_soup('https://finviz.com/quote.ashx?t=' + ticker)
 
         # base info
         full_title = self.soup.find('table', class_='fullview-title')
@@ -117,9 +116,10 @@ class Quote:
 
         trs = full_title.find_all('tr', recursive=False)
         self.ticker = trs[0].find(id="ticker").text
-        self.exchange = trs[0].find('span').text
-        self.company_name = trs[1].text
-        self.sectors = [x.strip() for x in trs[2].text.split('|')]
+        spans = trs[0].find_all('span')
+        self.company_name = spans[0].text
+        self.exchange = spans[1].text
+        self.sectors = [x.strip() for x in trs[1].text.split('|')]
 
         # fundament table (the table with index, market cap, etc.)
         fundamental_tds = self.soup.find('table', class_='snapshot-table2').find_all('td')
