@@ -1,24 +1,25 @@
 from setuptools import setup
 
 setup(
-    name='pyfinviz',  # How you named your package folder (MyLib)
-    packages=['pyfinviz'],  # Chose the same as "name"
-    version='0.8',  # Start with a small number and increase it with every change you make
+    name='pyfinviz',
+    packages=['pyfinviz'],
+    version='0.11',
     license='apache-2.0',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
-    description='Scrape data from finviz.com',  # Give a short description about your library
-    author='Oscar R. Torres',  # Type in your name
-    author_email='oscar0812torres@gmail.com',  # Type in your E-Mail
-    url='https://github.com/oscar0812/pyfinviz',  # Provide either the link to your github or to your website
-    download_url='https://github.com/oscar0812/pyfinviz/archive/v_08.tar.gz',
+    description='Scrape data from finviz.com',
+    author='Oscar R. Torres',
+    author_email='oscar0812torres@gmail.com',
+    url='https://github.com/oscar0812/pyfinviz',
+    download_url='https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_11.tar.gz',
     keywords=['FINVIZ', 'STOCKS', 'SCRAPER', 'BITTLE'],  # Keywords that define your package best
-    install_requires=[  # I get to this in a second
+    install_requires=[
         'validators',
         'beautifulsoup4',
         'free-proxy',
         'pandas',
         'numpy',
         'lxml',
-        'requests'
+        'requests',
+        'mock'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
