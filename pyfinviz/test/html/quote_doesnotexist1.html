@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<title>Stock Quote</title>
+<meta charset="utf-8"/><meta content="width=1024" name="viewport"/><meta content="" name="description"/>
+<link as="font" crossorigin="" href="/fonts/lato-v17-latin-ext_latin-regular.woff2" rel="preload"/>
+<link as="font" crossorigin="" href="/fonts/lato-v17-latin-ext_latin-700.woff2" rel="preload"/>
+<link as="font" crossorigin="" href="/fonts/lato-v17-latin-ext_latin-900.woff2" rel="preload"/>
+<link as="font" crossorigin="" href="/fonts/inter-latin.woff2" rel="preload"/>
+
+<link href="/assets/dist/finviz.97ef556b.css" onerror="window.handleScriptNotLoaded(this)" rel="stylesheet" type="text/css"/>
+<link href="/assets/dist/main.9048a445.css" onerror="window.handleScriptNotLoaded(this)" rel="stylesheet" type="text/css"/>
+<link href="/favicon_2x.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/quote.ashx?t=DOESNOTEXIST1" rel="canonical"/>
+<!-- Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+
+<!-- End Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+
+<link href="/assets/dist/redesign.16155b86.css" rel="stylesheet" type="text/css"/></head>
+
+<body class="m-0 yellow-tooltip is-quote">
+
+
+<div id="notifications-container"></div>
+<table class="header">
+<tr class="align-top">
+<td>
+<table class="header-container">
+<tr>
+<td class="w-[30%]">
+<table class="w-full">
+<tr>
+<td class="h-[50px] align-middle">
+<a class="logo" href="/">
+<svg class="block" height="32" width="225">
+<use class="dark:hidden" href="/img/logo.svg#free"></use>
+<use class="hidden dark:block" href="/img/logo.svg#free-dark"></use>
+</svg></a>
+</td>
+</tr>
+<tr>
+<td class="search" id="search" style="padding-top: 4px">
+<form style="margin: 0">
+<input placeholder="Search ticker, company or profile" type="text" value=""/>
+<span class="fa fa-search"></span>
+</form>
+</td>
+</tr>
+</table>
+</td>
+<td class="align-bottom pb-1">
+<div class="hidden xl:flex items-center h-[37px] pl-2" id="microbar_position"><div><div class="relative overflow-hidden flex items-center justify-center w-full mx-auto" id="IC_D_88x31_1" style="width:88px;height:31px;max-height:31px"></div></div></div>
+</td>
+<td class="relative w-[730px] text-right">
+<div class="overflow-hidden absolute top-0 right-0 w-full h-24" id="banner_position"><div class="relative overflow-hidden flex items-center justify-center w-full mx-auto" id="IC_D_728x90_1" style="width:728px;height:90px;max-height:90px"></div></div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="w-[1000px]" style="font-size:0">
+<img alt="" class="w-[1000px] h-px" src="/gfx/nic2x2.gif"/>
+</td>
+</tr>
+</table>
+<table class="navbar">
+<tr>
+<td class="h-[30px]">
+<table class="header-container">
+<tr><td><a class="nav-link is-first" href="/">Home</a></td><td><a class="nav-link" href="/news.ashx">News</a></td><td><a class="nav-link" href="/screener.ashx">Screener</a></td><td><a class="nav-link" href="/map.ashx">Maps</a></td><td><a class="nav-link" href="/groups.ashx">Groups</a></td><td><a class="nav-link" href="/portfolio.ashx">Portfolio</a></td><td><a class="nav-link" href="/insidertrading.ashx">Insider</a></td><td><a class="nav-link" href="/futures.ashx">Futures</a></td><td><a class="nav-link" href="/forex.ashx">Forex</a></td><td><a class="nav-link" href="/crypto.ashx">Crypto</a></td><td><a class="nav-link" href="/elite.ashx?utm_source=finviz&amp;utm_medium=banner&amp;utm_campaign=main-navbar-backtests">Backtests</a></td><td><a class="nav-link is-elite" href="/elite.ashx">Elite</a></td><td class="w-full relative"><div class="absolute inset-0"><div id="time"></div></div></td>
+<td>
+<a class="nav-link is-help" href="/help/screener.ashx">
+<span class="fa fa-question-circle"></span>
+                        Help
+                    </a>
+</td>
+<td class="nav relative">
+<a class="is-help h-8" data-testid="chart-layout-theme" href="#" id="themeToggle" onclick="setChartThemeCookie('light', true)" style="border-left: 1px solid #444a57" title="Toggle Light/Dark mode">
+<svg class="fill-current text-white inline-block mb-0.5" height="16" width="16">
+<use href="/assets/icons.svg?rev=3#brightness1Outlined"></use>
+</svg>
+</a>
+<div class="z-dialog absolute hidden border border-violet-300 bg-violet-600 rounded-md p-3 w-96 -left-[17rem] top-11 drop-shadow-lg" id="dark-theme-notice-tooltip">
+<span class="border-violet-300 absolute -top-[6.75px] left-3/4 -z-10 h-3 w-3 -translate-x-1/2 rotate-45 border-t border-l bg-violet-600"></span>
+<div><svg class="fill-current text-violet-100" height="16" width="16">
+<use href="/assets/icons.svg?rev=3#moonOutlined"></use>
+</svg></div>
+<div class="px-3" style="width: 326px">
+<p class="whitespace-normal leading-tight text-violet-100 font-medium font-sans">NEW: Give your eyes a break with our new <b>Dark</b> and <b>Light</b> mode toggle.</p>
+<img class="pt-3" src="/img/dark-mode-toggle-zoom-free.gif" style="position: relative; left: -22px; width: 357px; margin-left: -6px;"/>
+</div>
+<button class="flex items-start" onclick="Finviz.notice.darkThemeNotice2.close()"><svg class="fill-current text-violet-100 hover:text-gray-100" height="16" width="16">
+<use href="/assets/icons.svg?rev=3#menuClose"></use>
+</svg></button>
+</div>
+</td>
+<td><a class="nav-link sign-in" href="/login.ashx">Login</a></td>
+<td><a class="nav-link sign-up" href="/register.ashx">Register</a></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+<div class="content"><div class="fv-container"><tr><td align="center" class="body-text">Ticker <b>"DOESNOTEXIST1"</b> not found.<br/><a class="tab-link-u" href="search.ashx?p=DOESNOTEXIST1">Search <b>"DOESNOTEXIST1"</b></a><br/><br/><br/><br/>We cover only stocks and ETFs listed on NYSE, NASDAQ, and AMEX. International and OTC/PK are not available.</td></tr></div></div>
+<div class="footer" style="margin-top: 20px;padding-bottom: 215px">
+<div class="footer_links">
+<a class="tab-link" href="/affiliate.ashx">affiliate</a>
+<span class="footer_dot"> • </span>
+<a class="tab-link" href="/advertise.ashx">advertise</a>
+<span class="footer_dot"> • </span><a class="tab-link" href="#" onclick="setChartThemeCookie('light')">toggle light mode</a>
+<span class="footer_dot"> • </span>
+<a class="tab-link" href="/contact.ashx">contact</a>
+<span class="footer_dot"> • </span>
+<a class="tab-link" href="/privacy.ashx">privacy</a>
+<span class="footer_dot"> • </span>
+<a class="tab-link" href="/help/screener.ashx">help</a>
+<br/>
+<a class="tab-link" href="javascript:void(0)" onclick="window.__uspapi &amp;&amp; window.__uspapi('displayUspUi');">do not sell my data</a>
+<span class="footer_dot"> • </span>
+<a class="tab-link" href="javascript:void(0)" onclick="window.__tcfapi &amp;&amp; window.__tcfapi('displayConsentUi', 2, function() {})">privacy settings</a>
+</div>
+                Quotes delayed 15 minutes for NASDAQ, and 20 minutes for NYSE and AMEX.
+                <br/>
+                Copyright © 2007-2023 FINVIZ.com. All Rights Reserved.
+            </div>
+
+
+<div class="relative overflow-hidden flex items-center justify-center w-full mx-auto" id="IC_D_1x1_1"></div><div class="modal-elite-ad" id="modal-elite-ad">
+<div class="modal-elite-ad_content" id="modal-elite-ad_content">
+<button class="modal-elite-ad_close" id="modal-elite-ad-close" type="button">×</button>
+<!--<div id="modal-elite-ad-content-0" style="display: none">
+			                        <h2>Ever heard of Finviz*Elite?</h2>
+                                    <p>
+                                        Our premium service offers you real-time quotes, advanced visualizations, technical studies, and much more.<br>
+                                        Become Elite and make informed financial decisions.
+                                    </p>
+                                    <a href="/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-0" id="modal-elite-ad-btn-0" class="" target="_blank">Find out more</a>
+                                </div>-->
+<div id="modal-elite-ad-content-1" style="display: block">
+<h2>Upgrade your FINVIZ experience</h2>
+<p>
+                                        Join thousands of traders who make more informed decisions with our premium features.
+                                        Real-time quotes, advanced visualizations, backtesting, and much more.
+                                    </p>
+<a class="modal-elite_button" href="/elite.ashx?utm_source=finviz&amp;utm_medium=banner&amp;utm_campaign=modal-1" id="modal-elite-ad-btn-1" target="_blank">Learn more about FINVIZ*Elite</a>
+</div>
+</div>
+</div>
+
+</body>
+</html>
