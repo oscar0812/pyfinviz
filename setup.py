@@ -18,8 +18,7 @@ setup(
         'pandas',
         'numpy',
         'lxml',
-        'requests',
-        'mock'
+        'requests'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

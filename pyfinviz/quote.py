@@ -104,7 +104,8 @@ class Quote:
         return pd.DataFrame(insider_trading_info)
 
     def __init__(self, ticker="META"):
-        self.soup = WebScraper.get_soup('https://finviz.com/quote.ashx?t=' + ticker)
+        self.main_url = 'https://finviz.com/quote.ashx?t=' + ticker
+        self.soup = WebScraper.get_soup(main_url=self.main_url)
 
         # base info
         full_title = self.soup.find('table', class_='fullview-title')
@@ -116,10 +117,11 @@ class Quote:
 
         trs = full_title.find_all('tr', recursive=False)
         self.ticker = trs[0].find(id="ticker").text
-        spans = trs[0].find_all('span')
-        self.company_name = spans[0].text
-        self.exchange = spans[1].text
-        self.sectors = [x.strip() for x in trs[1].text.split('|')]
+        self.company_name = trs[0].find('span').text
+
+        sectors_split = [x.strip() for x in trs[1].text.split('|')]  # ['Consumer Cyclical', ..., 'NASD']
+        self.sectors = sectors_split[0: -1]
+        self.exchange = sectors_split[-1]
 
         # fundament table (the table with index, market cap, etc.)
         fundamental_tds = self.soup.find('table', class_='snapshot-table2').find_all('td')
