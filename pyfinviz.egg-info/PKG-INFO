@@ -1,13 +1,14 @@
 Metadata-Version: 2.1
 Name: pyfinviz
-Version: 0.11
+Version: 0.12
 Summary: Scrape data from finviz.com
 Home-page: https://github.com/oscar0812/pyfinviz
-Download-URL: https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_11.tar.gz
 Author: Oscar R. Torres
 Author-email: oscar0812torres@gmail.com
 License: apache-2.0
+Download-URL: https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_12.tar.gz
 Keywords: FINVIZ,STOCKS,SCRAPER,BITTLE
+Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
 Classifier: Topic :: Software Development :: Build Tools
@@ -208,3 +209,5 @@ pandas output:
 
 [60 rows x 18 columns]
 ```
+
+

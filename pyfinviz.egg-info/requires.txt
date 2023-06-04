@@ -5,4 +5,3 @@ pandas
 numpy
 lxml
 requests
-mock
