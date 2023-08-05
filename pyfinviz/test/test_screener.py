@@ -25,7 +25,7 @@ class TestScreener(TestCase):
         screener = Screener()
 
         self.assertIsNotNone(screener)
-        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=111&f=&r=', screener.main_url)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=111&s=&f=&r=', screener.main_url)
         self.assertEqual([1], list(screener.soups.keys()))  # get page 1 by default
         self.assertEqual([1], list(screener.data_frames.keys()))  # get page 1 by default
         self.assertEqual(['No', 'Ticker', 'Company', 'Sector', 'Industry', 'Country', 'MarketCap',
@@ -38,7 +38,7 @@ class TestScreener(TestCase):
                             pages=pages)
 
         self.assertIsNotNone(screener)
-        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=121&f=exch_nasd,idx_sp500&r=', screener.main_url)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=121&s=&f=exch_nasd,idx_sp500&r=', screener.main_url)
         self.assertCountEqual(pages, list(screener.soups.keys()))  # assert equal elements regardless of order
         self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
 
