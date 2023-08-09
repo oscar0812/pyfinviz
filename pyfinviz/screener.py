@@ -8,6 +8,41 @@ class Screener:
     class ScreenerFilterOption:
         ALL = ""
 
+    class SignalOption(ScreenerFilterOption, Enum):
+        TOP_GAINERS = "ta_topgainers"
+        TOP_LOSERS = "ta_toplosers"
+        NEW_HIGH = "ta_newhigh"
+        NEW_LOW = "ta_newlow"
+        MOST_VOLATILE = "ta_mostvolatile"
+        MOST_ACTIVE = "ta_mostactive"
+        UNUSUAL_VOLUME = "ta_unusualvolume"
+        OVERBOUGHT = "ta_overbought"
+        OVERSOLD = "ta_oversold"
+        DOWNGRADES = "n_downgrades"
+        UPGRADES = "n_upgrades"
+        EARNINGS_BEFORE = "n_earningsbefore"
+        EARNINGS_AFTER = "n_earningsafter"
+        RECENT_INSIDER_BUYING = "it_latestbuys"
+        RECENT_INSIDER_SELLING = "it_latestsales"
+        MAJOR_NEWS = "n_majornews"
+        HORIZONTAL_S_R = "ta_p_horizontal"
+        TL_RESISTANCE = "ta_p_tlresistance"
+        TL_SUPPORT = "ta_p_tlsupport"
+        WEDGE_UP = "ta_p_wedgeup"
+        WEDGE_DOWN = "ta_p_wedgedown"
+        TRIANGLE_ASCENDING = "ta_p_wedgeresistance"
+        TRIANGLE_DESCENDING = "ta_p_wedgesupport"
+        WEDGE = "ta_p_wedge"
+        CHANNEL_UP = "ta_p_channelup"
+        CHANNEL_DOWN = "ta_p_channeldown"
+        CHANNEL = "ta_p_channel"
+        DOUBLE_TOP = "ta_p_doubletop"
+        DOUBLE_BOTTOM = "ta_p_doublebottom"
+        MULTIPLE_TOP = "ta_p_multipletop"
+        MULTIPLE_BOTTOM = "ta_p_multiplebottom"
+        HEAD_AND_SHOULDERS = "ta_p_headandshoulders"
+        HEAD_AND_SHOULDERS_INVERSE = "ta_p_headandshouldersinv"
+
     class ExchangeOption(ScreenerFilterOption, Enum):
         AMEX = "exch_amex"
         NASDAQ = "exch_nasd"
@@ -1812,7 +1847,7 @@ class Screener:
         """
         return str((n - 1) * 20 + 1)
 
-    def __init__(self, filter_options: List[ScreenerFilterOption] = None,
+    def __init__(self, filter_options: List[ScreenerFilterOption] = None, signal_option: SignalOption = None,
                  view_option: ViewOption = ViewOption.OVERVIEW, pages=None):
 
         if filter_options is None:
@@ -1821,7 +1856,13 @@ class Screener:
         if pages is None:
             pages = [1]
 
-        self.main_url = "https://finviz.com/screener.ashx?ft=4&v=" + view_option.value + "&f="
+        if signal_option:
+            signal_option = signal_option.value
+        else:
+            signal_option = ''
+
+        self.main_url = "https://finviz.com/screener.ashx?ft=4&v=" + view_option.value + "&s=" + signal_option + "&f="
+
         # check if the same enum was used twice
         enums = {}
         for e in filter_options:

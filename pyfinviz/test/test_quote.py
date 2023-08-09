@@ -23,7 +23,7 @@ class TestQuote(TestCase):
         self.assertEqual(20, quote.income_statement_df.columns.size)
         self.assertEqual(8, len(quote.income_statement_df))
         self.assertEqual(11, quote.insider_trading_df.columns.size)
-        self.assertEqual(91, len(quote.insider_trading_df))
+        self.assertTrue(not quote.insider_trading_df.empty) # amount of insider trading can change
         self.assertEqual(37, quote.balance_sheet_df.columns.size)
         self.assertEqual(8, len(quote.balance_sheet_df))
         self.assertEqual(23, quote.cash_flow_df.columns.size)
@@ -93,7 +93,7 @@ class TestQuote(TestCase):
         self.assertEqual(100, len(quote.outer_news_df))
         self.assertIsNone(quote.income_statement_df)
         self.assertEqual(11, quote.insider_trading_df.columns.size)
-        self.assertEqual(5, len(quote.insider_trading_df))
+        self.assertTrue(not quote.insider_trading_df.empty) # amount of insider trading can change 
         self.assertIsNone(quote.balance_sheet_df)
         self.assertIsNone(quote.cash_flow_df)
 
