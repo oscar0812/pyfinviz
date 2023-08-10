@@ -46,6 +46,8 @@ class WebScraper:
     def get_single_table_pandas(main_url):
         soup = WebScraper.get_soup(main_url)
         td = soup.find("td", {"class": "table-top"})
+        if td is None:
+            return soup, pd.DataFrame()
         main_table_rows = td.find_parent("table").find_all("tr")
         table_header = [re.sub(r'[^a-zA-Z0-9]', '', td.text.strip()) for td in
                         main_table_rows[0].find_all("td", recursive=False)]
