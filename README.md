@@ -100,7 +100,10 @@ print(quote.insider_trading_df)  # 0         WILKE JEFFREY A  ...  http://www.se
 ### Screener
 Information from https://finviz.com/screener.ashx?ft=4. The Screener class uses 
 ALL the options (dropdowns) in the webpage mentioned in the last sentence (over 60), and uses
-view options (OVERVIEW, VALUATION, ..., CUSTOM). You can also specify a range of pages to fetch.
+view options (OVERVIEW, VALUATION, ..., CUSTOM). Added signals filter too. You can also specify a range of pages to fetch.
+
+Returns an empty dataframe if there are no results.
+
 ```python
 from pyfinviz.screener import Screener
 
