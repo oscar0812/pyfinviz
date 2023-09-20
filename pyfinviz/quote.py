@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pandas as pd
 
 from pyfinviz.utils import WebScraper
@@ -46,7 +48,9 @@ class Quote:
 
             news_from = o_tds[1].find('span')
             date_ = o_tds[0].text.strip()
-            if '-' not in date_:
+            if date_.startswith('Today '):
+                date_ = datetime.today().strftime('%m-%d-%Y') + ' ' + date_.split(' ')[1]
+            elif '-' not in date_ and prev_date is not None:
                 date_ = prev_date.split(' ')[0] + ' ' + date_
 
             prev_date = date_
