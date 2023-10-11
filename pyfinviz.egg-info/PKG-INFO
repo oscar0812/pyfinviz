@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: pyfinviz
-Version: 0.14
+Version: 0.15
 Summary: Scrape data from finviz.com
 Home-page: https://github.com/oscar0812/pyfinviz
-Download-URL: https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_14.tar.gz
+Download-URL: https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_15.tar.gz
 Author: Oscar R. Torres
 Author-email: oscar0812torres@gmail.com
 License: apache-2.0
