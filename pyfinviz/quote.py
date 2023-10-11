@@ -9,7 +9,7 @@ class Quote:
 
     @staticmethod
     def __get_outer_ratings_df__(soup):
-        outer_ratings_table = soup.find('table', class_='js-table-ratings fullview-ratings-outer')
+        outer_ratings_table = soup.find('table', class_='js-table-ratings')
         # might not have outer ratings
         if outer_ratings_table is None:
             return None
@@ -18,7 +18,7 @@ class Quote:
 
         outer_ratings_info = []
         tags__ = ['Date', 'Status', 'Outer', 'Rating', 'Price']
-        for tr in outer_ratings_trs[1:]:
+        for tr in outer_ratings_trs:
             o_tds_text = [td.text for td in tr.find_all('td')]
             if len(o_tds_text) == len(tags__):
                 outer_ratings_info.append({tags__[i]: o_tds_text[i] for i in range(0, len(tags__))})
