@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: pyfinviz
-Version: 0.13
+Version: 0.14
 Summary: Scrape data from finviz.com
 Home-page: https://github.com/oscar0812/pyfinviz
-Download-URL: https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_13.tar.gz
+Download-URL: https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_14.tar.gz
 Author: Oscar R. Torres
 Author-email: oscar0812torres@gmail.com
 License: apache-2.0
@@ -123,7 +123,10 @@ print(quote.insider_trading_df)  # 0         WILKE JEFFREY A  ...  http://www.se
 ### Screener
 Information from https://finviz.com/screener.ashx?ft=4. The Screener class uses 
 ALL the options (dropdowns) in the webpage mentioned in the last sentence (over 60), and uses
-view options (OVERVIEW, VALUATION, ..., CUSTOM). You can also specify a range of pages to fetch.
+view options (OVERVIEW, VALUATION, ..., CUSTOM). Added signals filter too. You can also specify a range of pages to fetch.
+
+Returns an empty dataframe if there are no results.
+
 ```python
 from pyfinviz.screener import Screener
 
