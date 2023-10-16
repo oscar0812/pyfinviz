@@ -112,20 +112,25 @@ class Quote:
         self.soup = WebScraper.get_soup(main_url=self.main_url)
 
         # base info
-        full_title = self.soup.find('table', class_='fullview-title')
-        self.exists = full_title is not None
+        quote_header = self.soup.find('div', class_='quote-header')
+        self.exists = quote_header is not None
 
-        if full_title is None:
+        if not self.exists:
             # Doesn't exist
             return
 
-        trs = full_title.find_all('tr', recursive=False)
-        self.ticker = trs[0].find(id="ticker").text
-        self.company_name = trs[0].find('span').text
+        self.ticker = quote_header.find('h1').text.strip()
+        self.company_name = quote_header.find('h2').text.strip()
 
-        sectors_split = [x.strip() for x in trs[1].text.split('|')]  # ['Consumer Cyclical', ..., 'NASD']
-        self.sectors = sectors_split[0: -1]
-        self.exchange = sectors_split[-1]
+        sector_tags = self.soup.find('div', class_='quote-links').find('div').find_all('a', recursive=False)
+        sectors_arr = [x.text.strip() for x in sector_tags]  # ['Consumer Cyclical', ..., 'NASD']
+        self.sectors = sectors_arr[0: -1]
+        self.exchange = sectors_arr[-1]
+
+        # quote price
+        price_div = quote_header.find('div', class_='quote-price')
+        self.price_date = price_div.find(class_='quote-price_date').text.replace('•', '')
+        self.price = float(quote_header.find(class_='quote-price_wrapper').find('strong').text)
 
         # fundament table (the table with index, market cap, etc.)
         fundamental_tds = self.soup.find('table', class_='snapshot-table2').find_all('td')
