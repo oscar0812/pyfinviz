@@ -1,5 +1,6 @@
 venv/
 lib/
+dist/
 
 ### Python template
 # Byte-compiled / optimized / DLL files
