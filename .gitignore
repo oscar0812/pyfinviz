@@ -1,6 +1,7 @@
 venv/
 lib/
 dist/
+pyfinviz.egg-info/
 
 ### Python template
 # Byte-compiled / optimized / DLL files
