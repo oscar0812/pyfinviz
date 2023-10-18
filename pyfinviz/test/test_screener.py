@@ -31,9 +31,9 @@ class TestScreener(TestCase):
         self.assertEqual(['No', 'Ticker', 'Company', 'Sector', 'Industry', 'Country', 'MarketCap',
                           'PE', 'Price', 'Change', 'Volume'], screener.data_frames.get(1).columns.to_list())
 
-    def test_main_FILTER_NASDAQ_and_FILTER_SANDP500_and_VIEWOPTION_VALUATION_PAGES_1_3(self):
+    def test_main_FILTER_NASDAQ_and_FILTER_S_AND_P500_and_VIEWOPTION_VALUATION_PAGES_1_3(self):
         pages = [1, 3]
-        screener = Screener(filter_options=[Screener.ExchangeOption.NASDAQ, Screener.IndexOption.SANDP_500],
+        screener = Screener(filter_options=[Screener.ExchangeOption.NASDAQ, Screener.IndexOption.S_AND_P_500],
                             view_option=Screener.ViewOption.VALUATION,
                             pages=pages)
 
