@@ -22,7 +22,7 @@ print(news.news_df)  # NEWS table information in a pd.DataFrame object
 print(news.blogs_df)  # BLOGS table information in a pd.DataFrame object
 ```
 
-### Cryto
+### Crypto
 Information from https://finviz.com/crypto_performance.ashx. 
 Uses relative performance options (D, W, M, MTD, Q, HY, Y, YTD)
 ```python

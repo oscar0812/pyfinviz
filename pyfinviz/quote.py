@@ -1,11 +1,38 @@
+from collections import Counter
 from datetime import datetime
 
+import bs4
 import pandas as pd
 
 from pyfinviz.utils import WebScraper
 
 
 class Quote:
+
+    @staticmethod
+    def __get_fundamental_df__(soup):
+        # fundament table (the table with index, market cap, etc.)
+        fundamental_tds = soup.find('table', class_='snapshot-table2').find_all('td')
+
+        '''
+            Add hover data-boxover attr to title IF title repeats, for example
+            Old key (Just inner text) = 'EPS next Y'
+            New key (inner text + hover text) = 'EPS next Y - EPS estimate for next year'
+        '''
+        fundamental_info = dict()
+        counter = Counter([x.text for x in fundamental_tds])
+        for index in range(0, len(fundamental_tds) - 1, 2):
+            key_td, value_td = fundamental_tds[index], fundamental_tds[index + 1]
+            key: str = key_td.text
+            if counter[key_td.text] > 1:
+                # ... cssheader=[tooltip_short_hdr] body=[EPS estimate for next year] offsetx=[10] ...
+                boxover_attr: str = bs4.BeautifulSoup(key_td.attrs['data-boxover'].replace('<br>', ' '), 'lxml').text
+                open_index = boxover_attr.index(' body=', 0) + 7
+                close_index = boxover_attr.index(']', open_index)
+                key = f'{key} - {boxover_attr[open_index: close_index]}'
+            fundamental_info[key] = [value_td.text]
+
+        return pd.DataFrame.from_dict(fundamental_info)
 
     @staticmethod
     def __get_outer_ratings_df__(soup):
@@ -49,9 +76,9 @@ class Quote:
             news_from = o_tds[1].find('span')
             date_ = o_tds[0].text.strip()
             if date_.startswith('Today '):
-                date_ = datetime.today().strftime('%m-%d-%Y') + ' ' + date_.split(' ')[1]
+                date_ = f"{datetime.today().strftime('%m-%d-%Y')} {date_.split(' ')[1]}"
             elif '-' not in date_ and prev_date is not None:
-                date_ = prev_date.split(' ')[0] + ' ' + date_
+                date_ = f"{prev_date.split(' ')[0]} {date_}"
 
             prev_date = date_
             info_ = [date_, news_a.text, news_a['href'], news_from.text]
@@ -61,10 +88,10 @@ class Quote:
 
     @staticmethod
     def __get_XHR_requests__(ticker):
-        s_u = 'https://finviz.com/api/statement.ashx?t=' + ticker + '&s='
-        statement_dicts = {'income_statement': WebScraper.get_json(s_u + 'IA'),
-                           'balance_sheet': WebScraper.get_json(s_u + 'BA'),
-                           'cash_flow': WebScraper.get_json(s_u + 'CA')}
+        s_u = f'https://finviz.com/api/statement.ashx?t={ticker}&s='
+        statement_dicts = {'income_statement': WebScraper.get_json(f'{s_u}IA'),
+                           'balance_sheet': WebScraper.get_json(f'{s_u}BA'),
+                           'cash_flow': WebScraper.get_json(f'{s_u}CA')}
 
         # convert dict to dataframes
         # issue 2: KeyError: 'data'
@@ -100,7 +127,7 @@ class Quote:
         for tr in insider_trading_trs[1:]:
             tds = tr.find_all('td', recursive=False)
             info_ = [td.text.strip() for td in tds]
-            info_.insert(1, 'https://finviz.com/' + tds[0].find('a')['href'])
+            info_.insert(1, f"https://finviz.com/{tds[0].find('a')['href']}")
             info_.append(tds[len(tds) - 1].find('a')['href'])
 
             insider_trading_info.append({tags__[i]: info_[i] for i in range(0, len(tags__))})
@@ -108,7 +135,7 @@ class Quote:
         return pd.DataFrame(insider_trading_info)
 
     def __init__(self, ticker="META"):
-        self.main_url = 'https://finviz.com/quote.ashx?t=' + ticker
+        self.main_url = f'https://finviz.com/quote.ashx?t={ticker}'
         self.soup = WebScraper.get_soup(main_url=self.main_url)
 
         # base info
@@ -132,13 +159,7 @@ class Quote:
         self.price_date = price_div.find(class_='quote-price_date').text.replace('•', '')
         self.price = float(quote_header.find(class_='quote-price_wrapper').find('strong').text)
 
-        # fundament table (the table with index, market cap, etc.)
-        fundamental_tds = self.soup.find('table', class_='snapshot-table2').find_all('td')
-
-        self.fundamental_df = pd.DataFrame.from_dict(
-            {fundamental_tds[index].text: [fundamental_tds[index + 1].text] for index in
-             range(0, len(fundamental_tds) - 1, 2)})
-
+        self.fundamental_df = Quote.__get_fundamental_df__(self.soup)
         self.outer_ratings_df = Quote.__get_outer_ratings_df__(self.soup)
         self.outer_news_df = Quote.__get_outer_news_df__(self.soup)
         self.income_statement_df, self.balance_sheet_df, self.cash_flow_df = Quote.__get_XHR_requests__(ticker)
