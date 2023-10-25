@@ -1,7 +1,0 @@
-validators
-beautifulsoup4
-free-proxy
-pandas
-numpy
-lxml
-requests
