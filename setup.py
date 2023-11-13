@@ -3,13 +3,13 @@ from setuptools import setup
 setup(
     name='pyfinviz',
     packages=['pyfinviz'],
-    version='0.18',
+    version='0.19',
     license='apache-2.0',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='Scrape data from finviz.com',
     author='Oscar R. Torres',
     author_email='oscar0812torres@gmail.com',
     url='https://github.com/oscar0812/pyfinviz',
-    download_url='https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_18.tar.gz',
+    download_url='https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_19.tar.gz',
     keywords=['FINVIZ', 'STOCKS', 'SCRAPER', 'BITTLE'],  # Keywords that define your package best
     install_requires=[
         'validators',
