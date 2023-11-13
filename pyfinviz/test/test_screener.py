@@ -25,7 +25,7 @@ class TestScreener(TestCase):
         screener = Screener()
 
         self.assertIsNotNone(screener)
-        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=111&s=&f=&r=', screener.main_url)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=111&s=&f=&o=ticker&r=', screener.main_url)
         self.assertEqual([1], list(screener.soups.keys()))  # get page 1 by default
         self.assertEqual([1], list(screener.data_frames.keys()))  # get page 1 by default
         self.assertEqual(['No', 'Ticker', 'Company', 'Sector', 'Industry', 'Country', 'MarketCap',
@@ -38,7 +38,104 @@ class TestScreener(TestCase):
                             pages=pages)
 
         self.assertIsNotNone(screener)
-        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=121&s=&f=exch_nasd,idx_sp500&r=', screener.main_url)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=121&s=&f=exch_nasd,idx_sp500&o=ticker&r=',
+                         screener.main_url)
+        self.assertCountEqual(pages, list(screener.soups.keys()))  # assert equal elements regardless of order
+        self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
+
+        expected_columns = ['No', 'Ticker', 'MarketCap', 'PE', 'FwdPE', 'PEG', 'PS', 'PB', 'PC', 'PFCF', 'EPSthisY',
+                            'EPSnextY', 'EPSpast5Y', 'EPSnext5Y', 'Salespast5Y', 'Price', 'Change', 'Volume']
+
+        self.assertEqual(expected_columns, screener.data_frames.get(1).columns.to_list())
+        self.assertEqual(expected_columns, screener.data_frames.get(3).columns.to_list())
+
+    def test_main_FILTER_NASDAQ_and_FILTER_S_AND_P500_and_VIEWOPTION_FINANCIAL_PAGES_1_3(self):
+        pages = [1, 3]
+        screener = Screener(filter_options=[Screener.ExchangeOption.NASDAQ, Screener.IndexOption.S_AND_P_500],
+                            view_option=Screener.ViewOption.FINANCIAL,
+                            pages=pages)
+
+        self.assertIsNotNone(screener)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=161&s=&f=exch_nasd,idx_sp500&o=ticker&r=',
+                         screener.main_url)
+        self.assertCountEqual(pages, list(screener.soups.keys()))  # assert equal elements regardless of order
+        self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
+
+        expected_columns = ['No', 'Ticker', 'MarketCap', 'Dividend', 'ROA', 'ROE', 'ROI', 'CurrR', 'QuickR',
+                            'LTDebtEq', 'DebtEq', 'GrossM', 'OperM', 'ProfitM', 'Earnings', 'Price', 'Change', 'Volume']
+
+        self.assertEqual(expected_columns, screener.data_frames.get(1).columns.to_list())
+        self.assertEqual(expected_columns, screener.data_frames.get(3).columns.to_list())
+
+    def test_main_FILTER_NASDAQ_and_FILTER_S_AND_P500_and_VIEWOPTION_OWNERSHIP_PAGES_1_3(self):
+        pages = [1, 3]
+        screener = Screener(filter_options=[Screener.ExchangeOption.NASDAQ, Screener.IndexOption.S_AND_P_500],
+                            view_option=Screener.ViewOption.OWNERSHIP,
+                            pages=pages)
+
+        self.assertIsNotNone(screener)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=131&s=&f=exch_nasd,idx_sp500&o=ticker&r=',
+                         screener.main_url)
+        self.assertCountEqual(pages, list(screener.soups.keys()))  # assert equal elements regardless of order
+        self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
+
+        expected_columns = ['No', 'Ticker', 'MarketCap', 'Outstanding', 'Float', 'InsiderOwn', 'InsiderTrans',
+                            'InstOwn', 'InstTrans', 'FloatShort', 'ShortRatio', 'AvgVolume', 'Price', 'Change',
+                            'Volume']
+
+        self.assertEqual(expected_columns, screener.data_frames.get(1).columns.to_list())
+        self.assertEqual(expected_columns, screener.data_frames.get(3).columns.to_list())
+
+    def test_main_FILTER_NASDAQ_and_FILTER_S_AND_P500_and_VIEWOPTION_PERFORMANCE_PAGES_1_3(self):
+        pages = [1, 3]
+        screener = Screener(filter_options=[Screener.ExchangeOption.NASDAQ, Screener.IndexOption.S_AND_P_500],
+                            view_option=Screener.ViewOption.PERFORMANCE,
+                            pages=pages)
+
+        self.assertIsNotNone(screener)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=141&s=&f=exch_nasd,idx_sp500&o=ticker&r=',
+                         screener.main_url)
+        self.assertCountEqual(pages, list(screener.soups.keys()))  # assert equal elements regardless of order
+        self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
+
+        expected_columns = ['No', 'Ticker', 'PerfWeek', 'PerfMonth', 'PerfQuart', 'PerfHalf', 'PerfYear', 'PerfYTD',
+                            'VolatilityW', 'VolatilityM', 'Recom', 'AvgVolume', 'RelVolume', 'Price', 'Change',
+                            'Volume']
+
+        self.assertEqual(expected_columns, screener.data_frames.get(1).columns.to_list())
+        self.assertEqual(expected_columns, screener.data_frames.get(3).columns.to_list())
+
+    def test_main_FILTER_NASDAQ_and_FILTER_S_AND_P500_and_VIEWOPTION_TECHINCAL_PAGES_1_3(self):
+        pages = [1, 3]
+        screener = Screener(filter_options=[Screener.ExchangeOption.NASDAQ, Screener.IndexOption.S_AND_P_500],
+                            view_option=Screener.ViewOption.TECHNICAL,
+                            pages=pages)
+
+        self.assertIsNotNone(screener)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=171&s=&f=exch_nasd,idx_sp500&o=ticker&r=',
+                         screener.main_url)
+        self.assertCountEqual(pages, list(screener.soups.keys()))  # assert equal elements regardless of order
+        self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
+
+        expected_columns = ['No', 'Ticker', 'Beta', 'ATR', 'SMA20', 'SMA50', 'SMA200', '52WHigh', '52WLow', 'RSI',
+                            'Price', 'Change', 'fromOpen', 'Gap', 'Volume']
+
+        self.assertEqual(expected_columns, screener.data_frames.get(1).columns.to_list())
+        self.assertEqual(expected_columns, screener.data_frames.get(3).columns.to_list())
+
+    def test_main_FILTER_LARGE_10BLN_TO_200BLN_and_S_AND_P_500_and_OVER_1_and_and_VIEWOPTION_VALUATION_and_ORDER_BY_SALES_DESC_and_PAGES_1_3(
+            self):
+        pages = [1, 3]
+        screener = Screener(filter_options=[Screener.MarketCapOption.LARGE_USD10BLN_TO_USD200BLN,
+                                            Screener.IndexOption.S_AND_P_500, Screener.RelativeVolumeOption.OVER_1],
+                            view_option=Screener.ViewOption.VALUATION,
+                            order_by=Screener.OrderBy.SALES, order_direction=Screener.OrderDirection.DESC,
+                            pages=pages)
+
+        self.assertIsNotNone(screener)
+        self.assertEqual(
+            'https://finviz.com/screener.ashx?ft=4&v=121&s=&f=cap_large,idx_sp500,sh_relvol_o1&o=-sales&r=',
+            screener.main_url)
         self.assertCountEqual(pages, list(screener.soups.keys()))  # assert equal elements regardless of order
         self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
 

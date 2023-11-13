@@ -1,9 +1,41 @@
 from pyfinviz.utils import WebScraper
-import enum
+from enum import Enum
 
 
 class Groups:
-    class GroupOption(enum.Enum):
+    class OrderBy(Enum):
+        NAME = "name"
+        MARKET_CAPITALIZATION = "marketcap"
+        PRICE_EARNINGS = "pe"
+        FORWARD_PRICE_EARNINGS = "forwardpe"
+        PEG_PRICE_EARNINGS_GROWTH = "peg"
+        PRICE_SALES = "ps"
+        PRICE_BOOK = "pb"
+        PRICE_CASH = "pc"
+        PRICE_FREE_CASH_FLOW = "pfcf"
+        DIVIDEND_YIELD = "dividendyield"
+        EPS_GROWTH_PAST_5_YEARS = "eps5years"
+        EPS_GROWTH_NEXT_5_YEARS = "estltgrowth"
+        SALES_GROWTH_PAST_5_YEARS = "sales5years"
+        SHORT_INTEREST_SHARE = "shortinterestshare"
+        ANALYST_RECOMMENDATION = "recom"
+        PERFORMANCE_WEEK = "perf1w"
+        PERFORMANCE_MONTH = "perf4w"
+        PERFORMANCE_QUARTER = "perf13w"
+        PERFORMANCE_HALF_YEAR = "perf26w"
+        PERFORMANCE_YEAR = "perf52w"
+        PERFORMANCE_YEAR_TO_DATE = "perfytd"
+        AVERAGE_VOLUME_3_MONTH = "averagevolume"
+        RELATIVE_VOLUME = "relativevolume"
+        CHANGE = "change"
+        VOLUME = "volume"
+        NUMBER_OF_STOCKS = "count"
+
+    class OrderDirection(Enum):
+        ASC = ""
+        DESC = "-"
+
+    class GroupOption(Enum):
         SECTOR = 'g=sector'
         INDUSTRY = 'g=industry'
         INDUSTRY_BASIC_MATERIALS = f'{INDUSTRY}&sg=basicmaterials'
@@ -20,13 +52,15 @@ class Groups:
         COUNTRY = 'g=country'
         CAPITALIZATION = 'g=capitalization'
 
-    class ViewOption(enum.Enum):
+    class ViewOption(Enum):
         OVERVIEW = "110"
         VALUATION = "120"
         PERFORMANCE = "140"
         CUSTOM = "150"
 
     def __init__(self, group_option: GroupOption = GroupOption.SECTOR,
-                 view_option: ViewOption = ViewOption.OVERVIEW):
-        self.main_url = f'https://finviz.com/groups.ashx?{group_option.value}&v={view_option.value}'
+                 view_option: ViewOption = ViewOption.OVERVIEW,
+                 order_by: OrderBy = OrderBy.NAME, order_direction: OrderDirection = OrderDirection.ASC):
+        order_str = order_direction.value + order_by.value
+        self.main_url = f'https://finviz.com/groups.ashx?{group_option.value}&v={view_option.value}&o={order_str}'
         self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)

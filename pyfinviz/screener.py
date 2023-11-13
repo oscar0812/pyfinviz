@@ -8,6 +8,99 @@ class Screener:
     class ScreenerFilterOption:
         ALL = ""
 
+    class OrderBy(Enum):
+        TICKER = "ticker"
+        TICKERS_INPUT_FILTER = "tickersfilter"
+        COMPANY = "company"
+        SECTOR = "sector"
+        INDUSTRY = "industry"
+        COUNTRY = "country"
+        INDEX = "index"
+        MARKET_CAP = "marketcap"
+        PRICE_EARNINGS = "pe"
+        FORWARD_PRICE_EARNINGS = "forwardpe"
+        PEG_PRICE_EARNINGS_GROWTH = "peg"
+        PRICE_SALES = "ps"
+        PRICE_BOOK = "pb"
+        PRICE_CASH = "pc"
+        PRICE_FREE_CASH_FLOW = "pfcf"
+        DIVIDEND_YIELD = "dividendyield"
+        PAYOUT_RATIO = "payoutratio"
+        EPS_TTM = "eps"
+        EPS_GROWTH_THIS_YEAR = "epsyoy"
+        EPS_GROWTH_NEXT_YEAR = "epsyoy1"
+        EPS_GROWTH_PAST_5_YEARS = "eps5years"
+        EPS_GROWTH_NEXT_5_YEARS = "estltgrowth"
+        SALES_GROWTH_PAST_5_YEARS = "sales5years"
+        EPS_GROWTH_QTR_OVER_QTR = "epsqoq"
+        SALES_GROWTH_QTR_OVER_QTR = "salesqoq"
+        SHARES_OUTSTANDING = "sharesoutstanding2"
+        SHARES_FLOAT = "sharesfloat"
+        FLOAT_OUTSTANDING = "floatoutstandingpct"
+        INSIDER_OWNERSHIP = "insiderown"
+        INSIDER_TRANSACTIONS = "insidertrans"
+        INSTITUTIONAL_OWNERSHIP = "instown"
+        INSTITUTIONAL_TRANSACTIONS = "insttrans"
+        SHORT_INTEREST_SHARE = "shortinterestshare"
+        SHORT_INTEREST_RATIO = "shortinterestratio"
+        SHORT_INTEREST = "shortInterest"
+        EARNINGS_DATE = "earningsdate"
+        RETURN_ON_ASSETS = "roa"
+        RETURN_ON_EQUITY = "roe"
+        RETURN_ON_INVESTMENT = "roi"
+        CURRENT_RATIO = "curratio"
+        QUICK_RATIO = "quickratio"
+        LT_DEBT_EQUITY = "ltdebteq"
+        TOTAL_DEBT_EQUITY = "debteq"
+        GROSS_MARGIN = "grossmargin"
+        OPERATING_MARGIN = "opermargin"
+        NET_PROFIT_MARGIN = "netmargin"
+        ANALYST_RECOMMENDATION = "recom"
+        PERFORMANCE_WEEK = "perf1w"
+        PERFORMANCE_MONTH = "perf4w"
+        PERFORMANCE_QUARTER = "perf13w"
+        PERFORMANCE_HALF_YEAR = "perf26w"
+        PERFORMANCE_YEAR = "perf52w"
+        PERFORMANCE_YEAR_TO_DATE = "perfytd"
+        BETA = "beta"
+        AVERAGE_TRUE_RANGE = "averagetruerange"
+        VOLATILITY_WEEK = "volatility1w"
+        VOLATILITY_MONTH = "volatility4w"
+        _20_DAY_SMA_RELATIVE = "sma20"
+        _50_DAY_SMA_RELATIVE = "sma50"
+        _200_DAY_SMA_RELATIVE = "sma200"
+        _50_DAY_HIGH_RELATIVE = "high50d"
+        _50_DAY_LOW_RELATIVE = "low50d"
+        _52_WEEK_HIGH_RELATIVE = "high52w"
+        _52_WEEK_LOW_RELATIVE = "low52w"
+        RELATIVE_STRENGTH_INDEX_14 = "rsi"
+        AVERAGE_VOLUME_3_MONTH = "averagevolume"
+        RELATIVE_VOLUME = "relativevolume"
+        CHANGE = "change"
+        CHANGE_FROM_OPEN = "changeopen"
+        GAP = "gap"
+        VOLUME = "volume"
+        OPEN = "open"
+        HIGH = "high"
+        LOW = "low"
+        PRICE = "price"
+        TARGET_PRICE = "targetprice"
+        IPO_DATE = "ipodate"
+        BOOK_VALUE_PER_SHARE = "book"
+        CASH_PER_SHARE = "cashPerShare"
+        DIVIDEND = "dividend"
+        EMPLOYEES = "employees"
+        EPS_ESTIMATE_NEXT_QUARTER = "estQ1"
+        INCOME = "income"
+        PREVIOUS_CLOSE = "prevClose"
+        SALES = "sales"
+        OPTIONABLE = "optionable"
+        SHORTABLE = "shortable"
+
+    class OrderDirection(Enum):
+        ASC = ""
+        DESC = "-"
+
     class SignalOption(ScreenerFilterOption, Enum):
         TOP_GAINERS = "ta_topgainers"
         TOP_LOSERS = "ta_toplosers"
@@ -1885,7 +1978,8 @@ class Screener:
         return str((n - 1) * 20 + 1)
 
     def __init__(self, filter_options: List[ScreenerFilterOption] = None, signal_option: SignalOption = None,
-                 view_option: ViewOption = ViewOption.OVERVIEW, pages=None):
+                 view_option: ViewOption = ViewOption.OVERVIEW, pages=None,
+                 order_by: OrderBy = OrderBy.TICKER, order_direction: OrderDirection = OrderDirection.ASC):
 
         if filter_options is None:
             filter_options = []
@@ -1910,7 +2004,10 @@ class Screener:
             e = enums[key]
             f_str += (e.value + " ")
 
-        self.main_url += f_str.strip().replace(" ", ",") + "&r="
+        order_str = order_direction.value + order_by.value
+
+        # f=earningsdate_today,exch_nyse,...
+        self.main_url += f_str.strip().replace(" ", ",") + f'&o={order_str}&r='
 
         self.soups = {x: None for x in pages}
         self.data_frames = {x: None for x in pages}
