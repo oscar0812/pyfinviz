@@ -2,6 +2,8 @@ from enum import Enum
 from typing import List
 
 from pyfinviz.utils import WebScraper
+from pyfinviz.base_url import get_url
+
 
 
 class Screener:
@@ -325,6 +327,7 @@ class Screener:
         WASTE_MANAGEMENT = "ind_wastemanagement"
         CUSTOM_ELITE_ONLY = "ind_modal"
 
+
     class CountryOption(ScreenerFilterOption, Enum):
         USA = "geo_usa"
         FOREIGN_EX_USA = "geo_notusa"
@@ -386,6 +389,7 @@ class Screener:
         UNITED_KINGDOM = "geo_unitedkingdom"
         URUGUAY = "geo_uruguay"
         CUSTOM_ELITE_ONLY = "geo_modal"
+
 
     class MarketCapOption(ScreenerFilterOption, Enum):
         MEGA_USD200BLN_AND_MORE = "cap_mega"
@@ -1992,7 +1996,7 @@ class Screener:
         else:
             signal_option = ''
 
-        self.main_url = "https://finviz.com/screener.ashx?ft=4&v=" + view_option.value + "&s=" + signal_option + "&f="
+        self.main_url = f'{get_url(path="screener")}ft=4&v=' + view_option.value + "&s=" + signal_option + "&f="
 
         # check if the same enum was used twice
         enums = {}

@@ -1,6 +1,7 @@
 import pandas as pd
 
 from pyfinviz.utils import WebScraper
+from pyfinviz.base_url import get_url
 
 
 class News:
@@ -21,7 +22,7 @@ class News:
         return pd.DataFrame(info)
 
     def __init__(self):
-        self.main_url = 'https://finviz.com/news.ashx'
+        self.main_url = f'{get_url(path="news")}'[:-1]
         self.soup = WebScraper.get_soup(self.main_url)
 
         div_ = self.soup.find('div', class_='news').find('table')

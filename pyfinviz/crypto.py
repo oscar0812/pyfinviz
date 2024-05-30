@@ -1,6 +1,6 @@
 from pyfinviz.utils import WebScraper
 import enum
-
+from pyfinviz.base_url import get_url
 
 class Crypto:
     class RelativePerformanceOption(enum.Enum):
@@ -14,5 +14,5 @@ class Crypto:
         YEAR_TO_DATE = "7"
 
     def __init__(self, relative_performance_option: RelativePerformanceOption = RelativePerformanceOption.ONE_DAY):
-        self.main_url = f'https://finviz.com/crypto_performance.ashx?v={relative_performance_option.value}'
+        self.main_url = f'{get_url(path="crypto_performance")}.ashx?v={relative_performance_option.value}'
         self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)
