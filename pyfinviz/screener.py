@@ -2903,26 +2903,12 @@ class Screener:
         """
         return str((n - 1) * 20 + 1)
 
-    def __init__(self, filter_options: List[ScreenerFilterOption] = None, signal_option: SignalOption = None,
-                 view_option: ViewOption = ViewOption.OVERVIEW, pages=None,
-                 order_by: OrderBy = OrderBy.TICKER, order_direction: OrderDirection = OrderDirection.ASC):
-
-        if filter_options is None:
-            filter_options = []
-
-        if pages is None:
-            pages = [1]
-
-        if signal_option:
-            signal_option = signal_option.value
-        else:
-            signal_option = ''
-
-        self.main_url = "https://finviz.com/screener.ashx?ft=4&v=" + view_option.value + "&s=" + signal_option + "&f="
+    def __create_url__(self):
+        main_url = "https://finviz.com/screener.ashx?ft=4&v=" + self.view_option.value + "&s=" + self.signal_option + "&f="
 
         # check if the same enum was used twice
         enums = {}
-        for e in filter_options:
+        for e in self.filter_options:
             enums[e.__class__.__name__] = e
 
         f_str = ""
@@ -2930,14 +2916,28 @@ class Screener:
             e = enums[key]
             f_str += (e.value + " ")
 
-        order_str = order_direction.value + order_by.value
+        order_str = self.order_direction.value + self.order_by.value
 
         # f=earningsdate_today,exch_nyse,...
-        self.main_url += f_str.strip().replace(" ", ",") + f'&o={order_str}&r='
+        main_url += f_str.strip().replace(" ", ",") + f'&o={order_str}&r='
+        return main_url
 
-        self.soups = {x: None for x in pages}
-        self.data_frames = {x: None for x in pages}
+    def __init__(self, main_url=None, filter_options: List[ScreenerFilterOption] = None,
+                 signal_option: SignalOption = None,
+                 view_option: ViewOption = ViewOption.OVERVIEW, pages=None,
+                 order_by: OrderBy = OrderBy.TICKER, order_direction: OrderDirection = OrderDirection.ASC):
 
-        for page_number in pages:
+        self.filter_options = [] if filter_options is None else filter_options
+        self.signal_option = '' if signal_option is None else signal_option.value
+        self.view_option = view_option
+        self.pages = [1] if pages is None else pages
+        self.order_by = order_by
+        self.order_direction = order_direction
+        self.main_url = self.__create_url__() if main_url is None else main_url
+
+        self.soups = {x: None for x in self.pages}
+        self.data_frames = {x: None for x in self.pages}
+
+        for page_number in self.pages:
             url_ = self.main_url + Screener.page_number(page_number)
             self.soups[page_number], self.data_frames[page_number] = WebScraper.get_single_table_pandas(url_)

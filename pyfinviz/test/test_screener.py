@@ -31,6 +31,19 @@ class TestScreener(TestCase):
         self.assertEqual(['No', 'Ticker', 'Company', 'Sector', 'Industry', 'Country', 'MarketCap',
                           'PE', 'Price', 'Change', 'Volume'], screener.data_frames.get(1).columns.to_list())
 
+    def test_main_USING_URL(self):
+        url_ = 'https://finviz.com/screener.ashx?v=152&c=0,1,2,79,9,10,11,35,45,54,55,59,68,70,64,67,100,107'
+        screener = Screener(main_url=url_)
+
+        self.assertIsNotNone(screener)
+        self.assertEqual(url_, screener.main_url)
+        self.assertEqual([1], list(screener.soups.keys()))  # get page 1 by default
+        self.assertEqual([1], list(screener.data_frames.keys()))  # get page 1 by default
+        self.assertEqual(
+            ['No', 'Ticker', 'Company', 'Index', 'PEG', 'PS', 'PB', 'CurrR', 'PerfHalf', 'SMA200', '50DHigh',
+             'RSI', 'Earnings', 'IPODate', 'RelVolume', 'Volume',
+             'AssetType'], screener.data_frames.get(1).columns.to_list())
+
     def test_main_FILTER_NASDAQ_and_FILTER_S_AND_P500_and_VIEWOPTION_VALUATION_PAGES_1_3(self):
         pages = [1, 3]
         screener = Screener(filter_options=[Screener.ExchangeOption.NASDAQ, Screener.IndexOption.S_AND_P_500],
