@@ -151,6 +151,114 @@ class Screener:
         HEAD_AND_SHOULDERS = "ta_p_headandshoulders"
         HEAD_AND_SHOULDERS_INVERSE = "ta_p_headandshouldersinv"
 
+    class CustomSettingsOption(Enum):
+        NO = "0"
+        TICKER = "1"
+        COMPANY = "2"
+        INDEX = "79"
+        SECTOR = "3"
+        INDUSTRY = "4"
+        COUNTRY = "5"
+        MARKET_CAP = "6"
+        P_E = "7"
+        FORWARD_P_E = "8"
+        PEG = "9"
+        P_S = "10"
+        P_B = "11"
+        P_CASH = "12"
+        P_FREE_CASH_FLOW = "13"
+        BOOK_VALUE_PER_SHARE = "73"
+        CASH_PER_SHARE = "74"
+        DIVIDEND = "75"
+        DIVIDEND_YIELD = "14"
+        PAYOUT_RATIO = "15"
+        EPS = "16"
+        EPS_ESTIMATE_NEXT_QUARTER = "77"
+        EPS_GROWTH_THIS_YEAR = "17"
+        EPS_GROWTH_NEXT_YEAR = "18"
+        EPS_GROWTH_PAST_5_YEARS = "19"
+        EPS_GROWTH_NEXT_5_YEARS = "20"
+        SALES_GROWTH_PAST_5_YEARS = "21"
+        SALES_GROWTH_QTR_OVER_QTR = "23"
+        EPS_GROWTH_QTR_OVER_QTR = "22"
+        SALES = "82"
+        INCOME = "78"
+        EPS_SURPRISE = "127"
+        REVENUE_SURPRISE = "128"
+        SHARES_OUTSTANDING = "24"
+        SHARES_FLOAT = "25"
+        FLOAT_OUTSTANDING = "85"
+        INSIDER_OWNERSHIP = "26"
+        INSIDER_TRANSACTIONS = "27"
+        INSTITUTIONAL_OWNERSHIP = "28"
+        INSTITUTIONAL_TRANSACTIONS = "29"
+        FLOAT_SHORT = "30"
+        SHORT_RATIO = "31"
+        SHORT_INTEREST = "84"
+        RETURN_ON_ASSETS = "32"
+        RETURN_ON_EQUITY = "33"
+        RETURN_ON_INVESTMENTS = "34"
+        CURRENT_RATIO = "35"
+        QUICK_RATIO = "36"
+        LONG_TERM_DEBT_EQUITY = "37"
+        TOTAL_DEBT_EQUITY = "38"
+        GROSS_MARGIN = "39"
+        OPERATING_MARGIN = "40"
+        NET_PROFIT_MARGIN = "41"
+        PERFORMANCE_WEEK = "42"
+        PERFORMANCE_MONTH = "43"
+        PERFORMANCE_QUARTER = "44"
+        PERFORMANCE_HALF_YEAR = "45"
+        PERFORMANCE_YEAR = "46"
+        PERFORMANCE_YEARTODATE = "47"
+        BETA = "48"
+        AVERAGE_TRUE_RANGE = "49"
+        VOLATILITY_WEEK = "50"
+        VOLATILITY_MONTH = "51"
+        _20_DAY_SIMPLE_MOVING_AVERAGE = "52"
+        _50_DAY_SIMPLE_MOVING_AVERAGE = "53"
+        _200_DAY_SIMPLE_MOVING_AVERAGE = "54"
+        _50_DAY_HIGH = "55"
+        _50_DAY_LOW = "56"
+        _52_WEEK_HIGH = "57"
+        _52_WEEK_LOW = "58"
+        ALL_TIME_HIGH = "125"
+        ALL_TIME_LOW = "126"
+        RSI = "59"
+        EARNINGS_DATE = "68"
+        IPO_DATE = "70"
+        OPTIONABLE = "80"
+        SHORTABLE = "83"
+        EMPLOYEES = "76"
+        CHANGE_FROM_OPEN = "60"
+        GAP = "61"
+        ANALYST_RECOM = "62"
+        AVERAGE_VOLUME = "63"
+        RELATIVE_VOLUME = "64"
+        VOLUME = "67"
+        TARGET_PRICE = "69"
+        PREVIOUS_CLOSE = "81"
+        OPEN = "86"
+        HIGH = "87"
+        LOW = "88"
+        PRICE = "65"
+        CHANGE = "66"
+        CATEGORY = "103"
+        ASSET_TYPE = "100"
+        NET_EXPENSE_RATIO = "107"
+        TOTAL_HOLDINGS = "108"
+        AUM = "109"
+        NET_FLOWS_1M = "112"
+        NET_FLOWS_PERCENT_1M = "113"
+        NET_FLOWS_3M = "114"
+        NET_FLOWS_PERCENT_3M = "115"
+        NET_FLOWS_YTD = "116"
+        NET_FLOWS_PERCENT_YTD = "117"
+        RETURN_PERCENT_1Y = "120"
+        RETURN_PERCENT_3Y = "121"
+        RETURN_PERCENT_5Y = "122"
+        TAGS = "105"
+
     class ViewOption(ScreenerFilterOption, Enum):
         OVERVIEW = "111"
         VALUATION = "121"
@@ -160,7 +268,8 @@ class Screener:
         TECHNICAL = "171"
         ETF = "181"
         ETF_PERF = "191"
-        CUSTOM = "151"
+        CUSTOM_WITH_FILTERS = "151"
+        CUSTOM_WITH_SETTINGS = "152"
 
     class ExchangeOption(ScreenerFilterOption, Enum):
         AMEX = "exch_amex"
@@ -2904,31 +3013,33 @@ class Screener:
         return str((n - 1) * 20 + 1)
 
     def __create_url__(self):
-        main_url = "https://finviz.com/screener.ashx?ft=4&v=" + self.view_option.value + "&s=" + self.signal_option + "&f="
+        main_url = "https://finviz.com/screener.ashx?ft=4&v=" + self.view_option.value + "&s=" + self.signal_option
 
-        # check if the same enum was used twice
-        enums = {}
-        for e in self.filter_options:
-            enums[e.__class__.__name__] = e
+        enums_ = {e.__class__.__name__: e for e in self.filter_options}.values()
+        f_str = ','.join([e.value for e in enums_])
+        if f_str != '':
+            main_url += f'&f={f_str}'
 
-        f_str = ""
-        for key in enums:
-            e = enums[key]
-            f_str += (e.value + " ")
+        enums_ = {e.name: e for e in self.custom_settings_options}.values()
+        c_str = ','.join([e.value for e in enums_])
+        if c_str != '':
+            main_url += f'&c={c_str}'
 
         order_str = self.order_direction.value + self.order_by.value
 
         # f=earningsdate_today,exch_nyse,...
-        main_url += f_str.strip().replace(" ", ",") + f'&o={order_str}&r='
+        main_url += f'&o={order_str}&r='
         return main_url
 
     def __init__(self, main_url=None, filter_options: List[ScreenerFilterOption] = None,
                  signal_option: SignalOption = None,
+                 custom_settings_options: List[CustomSettingsOption]=None,
                  view_option: ViewOption = ViewOption.OVERVIEW, pages=None,
                  order_by: OrderBy = OrderBy.TICKER, order_direction: OrderDirection = OrderDirection.ASC):
 
         self.filter_options = [] if filter_options is None else filter_options
         self.signal_option = '' if signal_option is None else signal_option.value
+        self.custom_settings_options = [] if custom_settings_options is None else custom_settings_options
         self.view_option = view_option
         self.pages = [1] if pages is None else pages
         self.order_by = order_by

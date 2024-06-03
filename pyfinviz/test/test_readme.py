@@ -82,7 +82,7 @@ class TestGithubIssues(TestCase):
     def test_issue25(self):
         from pyfinviz.screener import Screener
         options = [Screener.IndustryOption.STOCKS_ONLY_EX_FUNDS, Screener.AnalystRecomOption.STRONG_BUY_1]
-        screener = Screener(filter_options=options, view_option=Screener.ViewOption.CUSTOM,
+        screener = Screener(filter_options=options, view_option=Screener.ViewOption.CUSTOM_WITH_FILTERS,
                             pages=[x for x in range(1, 4)])
         print(screener.main_url)
         print(screener.data_frames)

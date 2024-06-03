@@ -25,7 +25,7 @@ class TestScreener(TestCase):
         screener = Screener()
 
         self.assertIsNotNone(screener)
-        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=111&s=&f=&o=ticker&r=', screener.main_url)
+        self.assertEqual('https://finviz.com/screener.ashx?ft=4&v=111&s=&o=ticker&r=', screener.main_url)
         self.assertEqual([1], list(screener.soups.keys()))  # get page 1 by default
         self.assertEqual([1], list(screener.data_frames.keys()))  # get page 1 by default
         self.assertEqual(['No', 'Ticker', 'Company', 'Sector', 'Industry', 'Country', 'MarketCap',
@@ -43,6 +43,18 @@ class TestScreener(TestCase):
             ['No', 'Ticker', 'Company', 'Index', 'PEG', 'PS', 'PB', 'CurrR', 'PerfHalf', 'SMA200', '50DHigh',
              'RSI', 'Earnings', 'IPODate', 'RelVolume', 'Volume',
              'AssetType'], screener.data_frames.get(1).columns.to_list())
+
+    def test_CUSTOM_VIEW_and_CUSTOM_SETTINGS(self):
+        screener = Screener(view_option=Screener.ViewOption.CUSTOM_WITH_SETTINGS,
+                            custom_settings_options=[Screener.CustomSettingsOption.OPTIONABLE,
+                                                     Screener.CustomSettingsOption.OPTIONABLE,
+                                                     Screener.CustomSettingsOption.ALL_TIME_HIGH])
+
+        self.assertIsNotNone(screener)
+        self.assertEqual("https://finviz.com/screener.ashx?ft=4&v=152&s=&c=80,125&o=ticker&r=", screener.main_url)
+        self.assertEqual([1], list(screener.soups.keys()))  # get page 1 by default
+        self.assertEqual([1], list(screener.data_frames.keys()))  # get page 1 by default
+        self.assertEqual(['Optionable', 'AllTimeHigh'], screener.data_frames.get(1).columns.to_list())
 
     def test_main_FILTER_NASDAQ_and_FILTER_S_AND_P500_and_VIEWOPTION_VALUATION_PAGES_1_3(self):
         pages = [1, 3]
