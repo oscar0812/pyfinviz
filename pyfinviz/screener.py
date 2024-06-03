@@ -9,6 +9,7 @@ class Screener:
         ALL = ""
 
     class OrderBy(Enum):
+        SIGNAL = "sigrow"
         TICKER = "ticker"
         TICKERS_INPUT_FILTER = "tickersfilter"
         COMPANY = "company"
