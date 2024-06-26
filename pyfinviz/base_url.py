@@ -6,7 +6,7 @@ def get_url(path):
     if path is None:
         raise ValueError("path must be provided")
     
-    found_dotenv = dotenv.find_dotenv()
+    found_dotenv = dotenv.find_dotenv(usecwd=True)
     elite = True
     if not found_dotenv:
         elite = False
