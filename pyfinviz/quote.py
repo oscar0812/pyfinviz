@@ -5,6 +5,7 @@ import bs4
 import pandas as pd
 
 from pyfinviz.utils import WebScraper
+from pyfinviz.base_url import get_url
 
 
 class Quote:
@@ -88,17 +89,24 @@ class Quote:
 
     @staticmethod
     def __get_XHR_requests__(ticker):
-        s_u = f'https://finviz.com/api/statement.ashx?t={ticker}&s='
+        s_u = f'{get_url(path="api/statement")}t={ticker}&s='
         statement_dicts = {'income_statement': WebScraper.get_json(f'{s_u}IA'),
                            'balance_sheet': WebScraper.get_json(f'{s_u}BA'),
-                           'cash_flow': WebScraper.get_json(f'{s_u}CA')}
+                           'cash_flow': WebScraper.get_json(f'{s_u}CA'),
+                           'reuters_income_statement': WebScraper.get_json(f'{s_u}IA&so=R'),
+                           'reuters_balance_sheet': WebScraper.get_json(f'{s_u}BA&so=R'),
+                            'reuters_cash_flow': WebScraper.get_json(f'{s_u}CA&so=R')}
 
-        # convert dict to dataframes
+        # convert dict to dataframes&so=R
         # issue 2: KeyError: 'data'
         # solution: some tickers dont have XHR_request data, return None
         income_statement_df = None
         balance_sheet_df = None
         cash_flow_df = None
+        reuters_income_statement_df = None
+        reuters_balance_sheet_df = None
+        reuters_cash_flow_df = None
+
 
         if 'data' in statement_dicts['income_statement']:
             income_statement_df = pd.DataFrame.from_dict(statement_dicts['income_statement']['data'])
@@ -109,7 +117,16 @@ class Quote:
         if 'data' in statement_dicts['cash_flow']:
             cash_flow_df = pd.DataFrame.from_dict(statement_dicts['cash_flow']['data'])
 
-        return income_statement_df, balance_sheet_df, cash_flow_df
+        if 'data' in statement_dicts['reuters_income_statement']:
+            reuters_income_statement_df = pd.DataFrame.from_dict(statement_dicts['reuters_income_statement']['data'])
+        
+        if 'data' in statement_dicts['reuters_balance_sheet']:
+            reuters_balance_sheet_df = pd.DataFrame.from_dict(statement_dicts['reuters_balance_sheet']['data'])
+
+        if 'data' in statement_dicts['reuters_cash_flow']:
+            reuters_cash_flow_df = pd.DataFrame.from_dict(statement_dicts['reuters_cash_flow']['data'])
+
+        return income_statement_df, balance_sheet_df, cash_flow_df, reuters_income_statement_df, reuters_balance_sheet_df, reuters_cash_flow_df
 
     @staticmethod
     def __get_insider_trading_df__(soup):
@@ -135,7 +152,7 @@ class Quote:
         return pd.DataFrame(insider_trading_info)
 
     def __init__(self, ticker="META"):
-        self.main_url = f'https://finviz.com/quote.ashx?t={ticker}'
+        self.main_url = f'{get_url(path="quote")}t={ticker}'
         self.soup = WebScraper.get_soup(main_url=self.main_url)
 
         # base info
@@ -162,5 +179,5 @@ class Quote:
         self.fundamental_df = Quote.__get_fundamental_df__(self.soup)
         self.outer_ratings_df = Quote.__get_outer_ratings_df__(self.soup)
         self.outer_news_df = Quote.__get_outer_news_df__(self.soup)
-        self.income_statement_df, self.balance_sheet_df, self.cash_flow_df = Quote.__get_XHR_requests__(ticker)
+        self.income_statement_df, self.balance_sheet_df, self.cash_flow_df, self.reuters_income_statement_df, self.reuters_balance_sheet_df, self.reuters_cash_flow_df = Quote.__get_XHR_requests__(ticker)
         self.insider_trading_df = Quote.__get_insider_trading_df__(self.soup)

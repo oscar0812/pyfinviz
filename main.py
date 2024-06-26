@@ -70,16 +70,18 @@ if __name__ == '__main__':
     print(quote.outer_ratings_df)  # 0   Nov-04-20     Upgrade  ...                Hold → Buy  $3360 → $4000
     print(quote.outer_news_df)  # 0   Jan-04-21 10:20PM  ...                   Bloomberg
     print(quote.income_statement_df)  # 1      12/31/2019  ...                    22.99206
+    print(quote.reuters_balance_sheet_df)  # 1      12/31/2019  ...                    22.99206
     print(quote.insider_trading_df)  # 0         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
 
     # =====
 
     from pyfinviz.screener import Screener
+    from pyfinviz.converter.industry import industry_by_display_name
 
     # with no params (default screener table)
     screener = Screener()
     # with params (The first 3 pages of "STOCKS ONLY" where Analyst recommend a strong buy)
-    options = [Screener.IndustryOption.STOCKS_ONLY_EX_FUNDS, Screener.AnalystRecomOption.STRONG_BUY_1]
+    options = [Screener.IndustryOption.STOCKS_ONLY_EX_FUNDS, industry_by_display_name["Airlines"], Screener.AnalystRecomOption.STRONG_BUY_1]
     screener = Screener(filter_options=options, view_option=Screener.ViewOption.VALUATION,
                         pages=[x for x in range(1, 4)])
 

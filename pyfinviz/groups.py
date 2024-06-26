@@ -1,5 +1,6 @@
 from pyfinviz.utils import WebScraper
 from enum import Enum
+from pyfinviz.base_url import get_url
 
 
 class Groups:
@@ -62,5 +63,5 @@ class Groups:
                  view_option: ViewOption = ViewOption.OVERVIEW,
                  order_by: OrderBy = OrderBy.NAME, order_direction: OrderDirection = OrderDirection.ASC):
         order_str = order_direction.value + order_by.value
-        self.main_url = f'https://finviz.com/groups.ashx?{group_option.value}&v={view_option.value}&o={order_str}'
+        self.main_url = f'{get_url(path="groups")}{group_option.value}&v={view_option.value}&o={order_str}'
         self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)

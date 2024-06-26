@@ -18,7 +18,8 @@ setup(
         'pandas',
         'numpy',
         'lxml',
-        'requests'
+        'requests',
+        'python-dotenv'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

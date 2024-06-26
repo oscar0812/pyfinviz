@@ -95,6 +95,7 @@ print(quote.outer_ratings_df)  # 0   Nov-04-20     Upgrade  ...                H
 print(quote.outer_news_df)  # 0   Jan-04-21 10:20PM  ...                   Bloomberg
 print(quote.income_statement_df)  # 1      12/31/2019  ...                    22.99206
 print(quote.insider_trading_df)  # 0         WILKE JEFFREY A  ...  http://www.sec.gov/Archives/edgar/data/1018724...
+print(quote.reuters_income_statement_df) #Available only for elite
 ```
 
 ### Screener
@@ -111,6 +112,7 @@ from pyfinviz.screener import Screener
 screener = Screener()
 # with params (The first 3 pages of "STOCKS ONLY" where Analyst recommend a strong buy)
 options = [Screener.IndustryOption.STOCKS_ONLY_EX_FUNDS, Screener.AnalystRecomOption.STRONG_BUY_1]
+
 screener = Screener(filter_options=options, view_option=Screener.ViewOption.VALUATION,
                     pages=[x for x in range(1, 4)])
 
@@ -188,3 +190,27 @@ pandas output:
 
 [60 rows x 18 columns]
 ```
+
+### Converters
+```python
+
+from pyfinviz.screener import Screener
+from pyfinviz.quote import Quote
+from pyfinviz.converter.industry import industry_by_display_name
+from pyfinviz.converter.country import country_by_display_name
+
+quote = Quote(ticker="AMZN")
+#industry and country converters from prettified display names (useful for using the industry value from Quote and using it for further screening. Also useful for displaying on UI, for example a dropdown)
+country = quote.sectors[2]
+industry = quote.sectors[1]
+options = [industry_by_display_name[industry], country_by_display_name[country]]
+
+screener = Screener(filter_options=options, view_option=Screener.ViewOption.OVERVIEW,
+                    pages=[x for x in range(1, 4)])
+
+
+```
+
+### Elite
+
+Create .env file and add variable named API_KEY to use the elite version of finviz

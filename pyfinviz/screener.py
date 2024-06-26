@@ -2,6 +2,8 @@ from enum import Enum
 from typing import List
 
 from pyfinviz.utils import WebScraper
+from pyfinviz.base_url import get_url
+
 
 
 class Screener:
@@ -452,6 +454,7 @@ class Screener:
         WASTE_MANAGEMENT = "ind_wastemanagement"
         CUSTOM_ELITE_ONLY = "ind_modal"
 
+
     class CountryOption(ScreenerFilterOption, Enum):
         USA = "geo_usa"
         FOREIGN_EX_USA = "geo_notusa"
@@ -513,6 +516,7 @@ class Screener:
         UNITED_KINGDOM = "geo_unitedkingdom"
         URUGUAY = "geo_uruguay"
         CUSTOM_ELITE_ONLY = "geo_modal"
+
 
     class MarketCapOption(ScreenerFilterOption, Enum):
         MEGA_USD200BLN_AND_MORE = "cap_mega"
@@ -3014,17 +3018,12 @@ class Screener:
         return str((n - 1) * 20 + 1)
 
     def __create_url__(self):
-        main_url = "https://finviz.com/screener.ashx?ft=4&v=" + self.view_option.value + "&s=" + self.signal_option
+        main_url =  f'{get_url(path="screener")}ft=4&v=' + self.view_option.value + "&s=" + self.signal_option
 
         enums_ = {e.__class__.__name__: e for e in self.filter_options}.values()
         f_str = ','.join([e.value for e in enums_])
         if f_str != '':
             main_url += f'&f={f_str}'
-
-        enums_ = {e.name: e for e in self.custom_settings_options}.values()
-        c_str = ','.join([e.value for e in enums_])
-        if c_str != '':
-            main_url += f'&c={c_str}'
 
         order_str = self.order_direction.value + self.order_by.value
 
