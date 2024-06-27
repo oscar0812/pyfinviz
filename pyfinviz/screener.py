@@ -3025,6 +3025,11 @@ class Screener:
         if f_str != '':
             main_url += f'&f={f_str}'
 
+        enums_ = {e.name: e for e in self.custom_settings_options}.values()
+        c_str = ','.join([e.value for e in enums_])
+        if c_str != '':
+            main_url += f'&c={c_str}'
+
         order_str = self.order_direction.value + self.order_by.value
 
         # f=earningsdate_today,exch_nyse,...
