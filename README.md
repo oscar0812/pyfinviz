@@ -1,6 +1,9 @@
-# pyfinviz
+# PyFinviz
+[![Downloads](https://static.pepy.tech/badge/Pyfinviz)](https://pepy.tech/project/Pyfinviz) [![Downloads](https://static.pepy.tech/badge/pyfinviz/month)](https://pepy.tech/project/pyfinviz)
+
 A python package that scrapes data from finviz.com and utilizes the pandas module.
 This package uses a fixed set of parameter options so you don't have to memorize them. 
+
 
 ### Install
 ```
