@@ -13,6 +13,6 @@ class Crypto:
         ONE_YEAR = "6"
         YEAR_TO_DATE = "7"
 
-    def __init__(self, relative_performance_option: RelativePerformanceOption = RelativePerformanceOption.ONE_DAY):
-        self.main_url = f'{get_url(path="crypto_performance")}v={relative_performance_option.value}'
+    def __init__(self, relative_performance_option: RelativePerformanceOption = RelativePerformanceOption.ONE_DAY, api_key=None):
+        self.main_url = f'{get_url(path="crypto_performance", api_key=api_key)}v={relative_performance_option.value}'
         self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)

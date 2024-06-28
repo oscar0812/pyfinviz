@@ -3018,7 +3018,7 @@ class Screener:
         return str((n - 1) * 20 + 1)
 
     def __create_url__(self):
-        main_url =  f'{get_url(path="screener")}ft=4&v=' + self.view_option.value + "&s=" + self.signal_option
+        main_url =  f'{get_url(path="screener", api_key=self.api_key)}ft=4&v=' + self.view_option.value + "&s=" + self.signal_option
 
         enums_ = {e.__class__.__name__: e for e in self.filter_options}.values()
         f_str = ','.join([e.value for e in enums_])
@@ -3040,8 +3040,9 @@ class Screener:
                  signal_option: SignalOption = None,
                  custom_settings_options: List[CustomSettingsOption]=None,
                  view_option: ViewOption = ViewOption.OVERVIEW, pages=None,
-                 order_by: OrderBy = OrderBy.TICKER, order_direction: OrderDirection = OrderDirection.ASC):
+                 order_by: OrderBy = OrderBy.TICKER, order_direction: OrderDirection = OrderDirection.ASC, api_key = None):
 
+        self.api_key = api_key
         self.filter_options = [] if filter_options is None else filter_options
         self.signal_option = '' if signal_option is None else signal_option.value
         self.custom_settings_options = [] if custom_settings_options is None else custom_settings_options

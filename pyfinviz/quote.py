@@ -88,8 +88,8 @@ class Quote:
         return pd.DataFrame(outer_news_info)
 
     @staticmethod
-    def __get_XHR_requests__(ticker):
-        s_u = f'{get_url(path="api/statement")}t={ticker}&s='
+    def __get_XHR_requests__(ticker, api_key=None):
+        s_u = f'{get_url(path="api/statement", api_key=api_key)}t={ticker}&s='
         statement_dicts = {'income_statement': WebScraper.get_json(f'{s_u}IA'),
                            'balance_sheet': WebScraper.get_json(f'{s_u}BA'),
                            'cash_flow': WebScraper.get_json(f'{s_u}CA'),
@@ -151,8 +151,8 @@ class Quote:
 
         return pd.DataFrame(insider_trading_info)
 
-    def __init__(self, ticker="META"):
-        self.main_url = f'{get_url(path="quote")}t={ticker}'
+    def __init__(self, ticker="META", api_key=None):
+        self.main_url = f'{get_url(path="quote", api_key=api_key)}t={ticker}'
         self.soup = WebScraper.get_soup(main_url=self.main_url)
 
         # base info
@@ -179,5 +179,5 @@ class Quote:
         self.fundamental_df = Quote.__get_fundamental_df__(self.soup)
         self.outer_ratings_df = Quote.__get_outer_ratings_df__(self.soup)
         self.outer_news_df = Quote.__get_outer_news_df__(self.soup)
-        self.income_statement_df, self.balance_sheet_df, self.cash_flow_df, self.reuters_income_statement_df, self.reuters_balance_sheet_df, self.reuters_cash_flow_df = Quote.__get_XHR_requests__(ticker)
+        self.income_statement_df, self.balance_sheet_df, self.cash_flow_df, self.reuters_income_statement_df, self.reuters_balance_sheet_df, self.reuters_cash_flow_df = Quote.__get_XHR_requests__(ticker, api_key=api_key)
         self.insider_trading_df = Quote.__get_insider_trading_df__(self.soup)
