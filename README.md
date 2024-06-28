@@ -216,4 +216,14 @@ screener = Screener(filter_options=options, view_option=Screener.ViewOption.OVER
 
 ### Elite
 
-Create .env file and add variable named API_KEY to use the elite version of finviz
+Just add an extra argument 'api_key' while creating the classes.
+Example:
+
+```python
+quote = Quote(ticker="AAPL", api_key="YOUR_API_KEY")
+screener = Screener(api_key="YOUR_API_KEY")
+screener = Screener(filter_options=options, view_option=Screener.ViewOption.OVERVIEW,
+                    pages=[x for x in range(1, 4)], api_key="YOUR_API_KEY")
+```
+
+It works for any supported feature (Quote, Screener, News, Insider, Groups, Crypto). 

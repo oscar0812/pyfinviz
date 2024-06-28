@@ -21,8 +21,8 @@ class News:
 
         return pd.DataFrame(info)
 
-    def __init__(self):
-        self.main_url = f'{get_url(path="news")}'[:-1]
+    def __init__(self, api_key=None):
+        self.main_url = f'{get_url(path="news", api_key=api_key)}'[:-1]
         self.soup = WebScraper.get_soup(self.main_url)
 
         div_ = self.soup.find('div', class_='news').find('table')
