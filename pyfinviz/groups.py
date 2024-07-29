@@ -61,7 +61,7 @@ class Groups:
 
     def __init__(self, group_option: GroupOption = GroupOption.SECTOR,
                  view_option: ViewOption = ViewOption.OVERVIEW,
-                 order_by: OrderBy = OrderBy.NAME, order_direction: OrderDirection = OrderDirection.ASC):
+                 order_by: OrderBy = OrderBy.NAME, order_direction: OrderDirection = OrderDirection.ASC, api_key=None):
         order_str = order_direction.value + order_by.value
-        self.main_url = f'{get_url(path="groups")}{group_option.value}&v={view_option.value}&o={order_str}'
+        self.main_url = f'{get_url(path="groups", api_key=api_key)}{group_option.value}&v={view_option.value}&o={order_str}'
         self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)

@@ -16,6 +16,6 @@ class Insider:
         SELL = "2"
 
     def __init__(self, filter_option: FilterOption = FilterOption.ALL,
-                 view_option: ViewOption = ViewOption.LATEST):
-        self.main_url = f'{get_url(path="insidertrading")}tc={filter_option.value}{view_option.value}'
+                 view_option: ViewOption = ViewOption.LATEST, api_key=None):
+        self.main_url = f'{get_url(path="insidertrading", api_key=api_key)}tc={filter_option.value}{view_option.value}'
         self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)
