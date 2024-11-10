@@ -1,3 +1,4 @@
+from enum import Enum
 import pandas as pd
 
 from pyfinviz.utils import WebScraper
@@ -5,6 +6,12 @@ from pyfinviz.base_url import get_url
 
 
 class News:
+
+    class ViewOption(Enum):
+            MARKET_NEWS = "1"
+            STOCKS_NEWS = "3"
+            ETF_NEWS = "4"
+            CRYPTO_NEWS = "5"
 
     @staticmethod
     def __table_to_df__(table):
@@ -21,8 +28,8 @@ class News:
 
         return pd.DataFrame(info)
 
-    def __init__(self, api_key=None):
-        self.main_url = f'{get_url(path="news", api_key=api_key)}'[:-1]
+    def __init__(self, api_key=None, view_option: ViewOption = ViewOption.MARKET_NEWS):
+        self.main_url = f'{get_url(path="news", api_key=api_key)}' + f"v={view_option}"
         self.soup = WebScraper.get_soup(self.main_url)
 
         div_ = self.soup.find('div', class_='news').find('table')
