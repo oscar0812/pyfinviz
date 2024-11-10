@@ -30,20 +30,19 @@ class News:
 
     def __init__(self, api_key=None, view_option: ViewOption = ViewOption.MARKET_NEWS):
 
-
-        self.main_url = f'{get_url(path="news", api_key=api_key)}' + f"v={view_option}"
+        self.blogs_df = None
+        self.main_url = f'{get_url(path="news", api_key=api_key)}' + f"v={view_option.value}"
         self.soup = WebScraper.get_soup(self.main_url)
 
-        div_ = self.soup.find('div', class_='news').find('table')
-        trs_ = div_.find_all('tr', recursive=False)
-        main_tables = trs_[len(trs_)-1].find_all('table')
-
         # handle multi tables presents on MARKET NEWS page
-        if view_option == ViewOption.MARKET_NEWS:
+        if view_option == News.ViewOption.MARKET_NEWS:
+            div_ = self.soup.find('div', class_='news').find('table')
+            trs_ = div_.find_all('tr', recursive=False)
+            main_tables = trs_[len(trs_)-1].find_all('table')
+
             self.news_df = News.__table_to_df__(main_tables[0])
             self.blogs_df = News.__table_to_df__(main_tables[1])
-            return
 
-        self.news_df = News.__table_to_df__(main_tables[0])
-        
-
+        else:
+            main_tables = self.soup.find('div', class_='news').find_all('table')
+            self.news_df = News.__table_to_df__(main_tables[0])
