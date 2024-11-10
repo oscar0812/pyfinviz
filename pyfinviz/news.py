@@ -23,7 +23,10 @@ class News:
             td_a = tds[len(tds)-1].find('a')
             if td_a is None:
                 continue
-            time = '' if len(tds) < 2 else tds[1].text
+            
+            time_td = tr.find('td', class_='news_date-cell')
+            time = time_td.text
+
             info.append({'Time': time, 'Headline': td_a.text, 'URL': td_a['href']})
 
         return pd.DataFrame(info)
