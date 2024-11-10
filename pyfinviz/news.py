@@ -30,7 +30,6 @@ class News:
 
     def __init__(self, api_key=None, view_option: ViewOption = ViewOption.MARKET_NEWS):
 
-        self.blogs_df = None
         self.main_url = f'{get_url(path="news", api_key=api_key)}' + f"v={view_option.value}"
         self.soup = WebScraper.get_soup(self.main_url)
 
@@ -46,3 +45,4 @@ class News:
         else:
             main_tables = self.soup.find('div', class_='news').find_all('table')
             self.news_df = News.__table_to_df__(main_tables[0])
+            self.blogs_df = None
