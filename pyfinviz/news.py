@@ -29,6 +29,8 @@ class News:
         return pd.DataFrame(info)
 
     def __init__(self, api_key=None, view_option: ViewOption = ViewOption.MARKET_NEWS):
+
+
         self.main_url = f'{get_url(path="news", api_key=api_key)}' + f"v={view_option}"
         self.soup = WebScraper.get_soup(self.main_url)
 
@@ -36,5 +38,12 @@ class News:
         trs_ = div_.find_all('tr', recursive=False)
         main_tables = trs_[len(trs_)-1].find_all('table')
 
+        # handle multi tables presents on MARKET NEWS page
+        if view_option == ViewOption.MARKET_NEWS:
+            self.news_df = News.__table_to_df__(main_tables[0])
+            self.blogs_df = News.__table_to_df__(main_tables[1])
+            return
+
         self.news_df = News.__table_to_df__(main_tables[0])
-        self.blogs_df = News.__table_to_df__(main_tables[1])
+        
+
