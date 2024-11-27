@@ -1,6 +1,7 @@
-from pyfinviz.utils import WebScraper
 from enum import Enum
+
 from pyfinviz.base_url import get_url
+from pyfinviz.utils import WebScraper
 
 
 class Groups:

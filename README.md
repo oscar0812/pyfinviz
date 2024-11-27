@@ -12,7 +12,7 @@ pip install pyfinviz
 
 ## Usage
 ### News
-Information from https://finviz.com/news.ashx.
+Information from https://finviz.com/news.ashx. Uses view options (MARKET_NEWS, )
 ```python
 from pyfinviz.news import News
 

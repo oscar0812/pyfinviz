@@ -1,17 +1,17 @@
 from enum import Enum
+
 import pandas as pd
 
-from pyfinviz.utils import WebScraper
 from pyfinviz.base_url import get_url
+from pyfinviz.utils import WebScraper
 
 
 class News:
-
     class ViewOption(Enum):
-            MARKET_NEWS = "1"
-            STOCKS_NEWS = "3"
-            ETF_NEWS = "4"
-            CRYPTO_NEWS = "5"
+        MARKET_NEWS = "1"
+        STOCKS_NEWS = "3"
+        ETF_NEWS = "4"
+        CRYPTO_NEWS = "5"
 
     @staticmethod
     def __table_to_df__(table):
@@ -20,10 +20,10 @@ class News:
 
         for tr in trs:
             tds = tr.find_all('td')
-            td_a = tds[len(tds)-1].find('a')
+            td_a = tds[len(tds) - 1].find('a')
             if td_a is None:
                 continue
-            
+
             time_td = tr.find('td', class_='news_date-cell')
             time = time_td.text
 
@@ -40,7 +40,7 @@ class News:
         if view_option == News.ViewOption.MARKET_NEWS:
             div_ = self.soup.find('div', class_='news').find('table')
             trs_ = div_.find_all('tr', recursive=False)
-            main_tables = trs_[len(trs_)-1].find_all('table')
+            main_tables = trs_[len(trs_) - 1].find_all('table')
 
             self.news_df = News.__table_to_df__(main_tables[0])
             self.blogs_df = News.__table_to_df__(main_tables[1])

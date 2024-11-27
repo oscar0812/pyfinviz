@@ -1,6 +1,8 @@
-from pyfinviz.utils import WebScraper
 import enum
+
 from pyfinviz.base_url import get_url
+from pyfinviz.utils import WebScraper
+
 
 class Crypto:
     class RelativePerformanceOption(enum.Enum):

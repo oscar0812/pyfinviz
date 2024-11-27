@@ -1,9 +1,8 @@
 from enum import Enum
 from typing import List
 
-from pyfinviz.utils import WebScraper
 from pyfinviz.base_url import get_url
-
+from pyfinviz.utils import WebScraper
 
 
 class Screener:
@@ -1329,7 +1328,7 @@ class Screener:
         OVER_50_PERCENT = "sh_insttrans_o50"
         CUSTOM_ELITE_ONLY = "sh_insttrans_frange"
 
-    class FloatShortOption(ScreenerFilterOption, Enum):
+    class ShortFloatOption(ScreenerFilterOption, Enum):
         LOW_LESS_THAN_5_PERCENT = "sh_short_low"
         HIGH_GREATER_THAN_20_PERCENT = "sh_short_high"
         UNDER_5_PERCENT = "sh_short_u5"

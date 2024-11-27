@@ -1,7 +1,7 @@
 import enum
 
-from pyfinviz.utils import WebScraper
 from pyfinviz.base_url import get_url
+from pyfinviz.utils import WebScraper
 
 
 class Insider:

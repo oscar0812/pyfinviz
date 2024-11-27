@@ -1,10 +1,10 @@
+import re
+
+import numpy as np
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from fp.fp import FreeProxy
-
-import re
-import numpy as np
-import pandas as pd
 
 
 class WebScraper:

@@ -4,8 +4,8 @@ from datetime import datetime
 import bs4
 import pandas as pd
 
-from pyfinviz.utils import WebScraper
 from pyfinviz.base_url import get_url
+from pyfinviz.utils import WebScraper
 
 
 class Quote:

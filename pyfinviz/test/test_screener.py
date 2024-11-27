@@ -105,7 +105,7 @@ class TestScreener(TestCase):
         self.assertCountEqual(pages, list(screener.data_frames.keys()))  # assert equal elements regardless of order
 
         expected_columns = ['No', 'Ticker', 'MarketCap', 'Outstanding', 'Float', 'InsiderOwn', 'InsiderTrans',
-                            'InstOwn', 'InstTrans', 'FloatShort', 'ShortRatio', 'AvgVolume', 'Price', 'Change',
+                            'InstOwn', 'InstTrans', 'ShortFloat', 'ShortRatio', 'AvgVolume', 'Price', 'Change',
                             'Volume']
 
         self.assertEqual(expected_columns, screener.data_frames.get(1).columns.to_list())
