@@ -3,14 +3,14 @@ from setuptools import setup
 setup(
     name='pyfinviz',
     packages=['pyfinviz'],
-    version='1.0',
+    version='1.1',
     license='apache-2.0',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='Scrape data from finviz.com',
     author='Oscar R. Torres',
     author_email='oscar0812torres@gmail.com',
     url='https://github.com/oscar0812/pyfinviz',
-    download_url='https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_1_0.tar.gz',
-    keywords=['FINVIZ', 'STOCKS', 'SCRAPER', 'BITTLE'],  # Keywords that define your package best
+    download_url='https://github.com/oscar0812/pyfinviz/archive/refs/tags/v_1_1.tar.gz',
+    keywords=['FINVIZ', 'STOCKS', 'SCRAPER', 'OSCAR RAFAEL TORRES'],  # Keywords that define your package best
     install_requires=[
         'validators',
         'beautifulsoup4',
@@ -33,5 +33,8 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
 )
