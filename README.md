@@ -16,13 +16,24 @@ Information from https://finviz.com/news.ashx.
 ```python
 from pyfinviz.news import News
 
-news = News()
+news = News() # by default scrap the Market News view
 
 # available variables:
 print(news.main_url)  # scraped URL
 print(news.soup)  # beautiful soup object
 print(news.news_df)  # NEWS table information in a pd.DataFrame object
 print(news.blogs_df)  # BLOGS table information in a pd.DataFrame object
+
+# all news page's views are also available by specifying the view_option value, please note that while
+# all view_option will populate a news_df attribute, only News.ViewOption.MARKET_NEWS will populate 
+# the blogs_df attribute. Available view options parameter values are:
+# - News.ViewOption.MARKET_NEWS 
+# - News.ViewOption.STOCKS_NEWS
+# - News.ViewOption.ETF_NEWS
+# - News.ViewOption.CRYPTO_NEWS
+news = News(view_option = News.ViewOption.ETF_NEWS)
+print(news.news_df)  # NEWS table information in a pd.DataFrame object
+
 ```
 
 ### Crypto
