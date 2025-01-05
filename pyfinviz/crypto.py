@@ -15,6 +15,16 @@ class Crypto:
         ONE_YEAR = "6"
         YEAR_TO_DATE = "7"
 
-    def __init__(self, relative_performance_option: RelativePerformanceOption = RelativePerformanceOption.ONE_DAY, api_key=None):
-        self.main_url = f'{get_url(path="crypto_performance", api_key=api_key)}v={relative_performance_option.value}'
+    class CurrencyOption(enum.Enum):
+        USD = "USD"
+        USDT = "USDT"
+        EUR = "EUR"
+        BTC = "BTC"
+
+    def __init__(self, relative_performance_option: RelativePerformanceOption = RelativePerformanceOption.ONE_DAY,
+                 currency_option: CurrencyOption = CurrencyOption.USD,
+                 api_key=None):
+        self.main_url = f'{get_url(path="crypto_performance", api_key=api_key)}' \
+                        f'v={relative_performance_option.value}' \
+                        f'&C={currency_option.value}'
         self.soup, self.table_df = WebScraper.get_single_table_pandas(self.main_url)

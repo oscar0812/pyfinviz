@@ -8,7 +8,17 @@ class TestCrypto(TestCase):
         crypto = Crypto()
 
         self.assertIsNotNone(crypto)
-        self.assertEqual('https://finviz.com/crypto_performance.ashx?v=1', crypto.main_url)
+        self.assertEqual('https://finviz.com/crypto_performance.ashx?v=1&C=USD', crypto.main_url)
+        self.assertIsNotNone(crypto.soup)
+        self.assertIsNotNone(crypto.table_df)
+        self.assertEqual(['No', 'Ticker', 'Price', 'Perf5Min', 'PerfHour', 'PerfDay', 'PerfWeek', 'PerfMonth',
+                          'PerfQuart', 'PerfHalf', 'PerfYear', 'PerfYTD'], crypto.table_df.columns.to_list())
+
+    def test_main_CURRENCY_BTC(self):
+        crypto = Crypto(currency_option=Crypto.CurrencyOption.BTC)
+
+        self.assertIsNotNone(crypto)
+        self.assertEqual('https://finviz.com/crypto_performance.ashx?v=1&C=BTC', crypto.main_url)
         self.assertIsNotNone(crypto.soup)
         self.assertIsNotNone(crypto.table_df)
         self.assertEqual(['No', 'Ticker', 'Price', 'Perf5Min', 'PerfHour', 'PerfDay', 'PerfWeek', 'PerfMonth',
