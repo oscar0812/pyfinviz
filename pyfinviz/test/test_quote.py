@@ -102,6 +102,30 @@ class TestQuote(TestCase):
         self.assertEqual(36, quote.cash_flow_df.columns.size)
         self.assertEqual(8, len(quote.cash_flow_df))
 
+    def test_main_NOW(self):
+        quote = Quote('NOW')
+
+        self.assertIsNotNone(quote)
+        self.assertTrue(quote.exists)
+        self.assertEqual('NOW', quote.ticker)
+        self.assertEqual('NYSE', quote.exchange)
+        self.assertEqual(['Technology', 'Software - Application', 'USA'], quote.sectors)
+        self.assertIsNotNone(quote.price_date)
+        self.assertIsNotNone(quote.price)
+        self.assertLessEqual(72, quote.fundamental_df.columns.size)
+        self.assertEqual(1, len(quote.fundamental_df))
+        self.assertEqual(5, quote.outer_ratings_df.columns.size)
+        self.assertEqual(20, len(quote.outer_ratings_df))
+        self.assertEqual(4, quote.outer_news_df.columns.size)
+        self.assertGreater(len(quote.outer_news_df), 0)
+        self.assertGreater(quote.income_statement_df.columns.size, 0)
+        self.assertEqual(8, len(quote.income_statement_df))
+        self.assertEqual(11, quote.insider_trading_df.columns.size)
+        self.assertEqual(39, quote.balance_sheet_df.columns.size)
+        self.assertEqual(8, len(quote.balance_sheet_df))
+        self.assertEqual(36, quote.cash_flow_df.columns.size)
+        self.assertEqual(8, len(quote.cash_flow_df))
+
     def test_main_DOESNOTEXIST1(self):
         quote = Quote('DOESNOTEXIST1')
 

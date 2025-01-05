@@ -174,7 +174,13 @@ class Quote:
         # quote price
         price_div = quote_header.find('div', class_='quote-price')
         self.price_date = price_div.find(class_='quote-price_date').text.replace('•', '')
-        self.price = float(quote_header.find(class_='quote-price_wrapper').find('strong').text)
+        try:
+            price_text = quote_header.find(class_='quote-price_wrapper').find('strong').text
+            price_text = price_text.replace(',', '')
+            self.price = float(price_text)
+        except (AttributeError, ValueError) as e:
+            print(f"Error parsing price: {e}")
+            self.price = None
 
         self.fundamental_df = Quote.__get_fundamental_df__(self.soup)
         self.outer_ratings_df = Quote.__get_outer_ratings_df__(self.soup)
