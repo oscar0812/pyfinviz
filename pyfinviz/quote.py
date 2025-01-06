@@ -1,4 +1,5 @@
 import enum
+import json
 from collections import Counter
 from datetime import datetime
 
@@ -187,9 +188,18 @@ class Quote:
             })
         return pd.DataFrame(messages_data)
 
+    @staticmethod
+    def __get_managers_and_funds_df__(soup):
+        script_tag = soup.find('script', id='institutional-ownership-init-data-0')
+        if not script_tag:
+            return None
+        json_data = json.loads(script_tag.string)
+        funds_data = json_data['fundsOwnership']
+        return pd.DataFrame(funds_data)
+
     def __init__(self, ticker="META", statement_timeframe: Timeframe = Timeframe.ANNUAL, api_key=None):
         self.main_url = f'{get_url(path="quote", api_key=api_key)}t={ticker}'
-        self.soup = WebScraper.get_soup(main_url=self.main_url)
+        self.soup = WebScraper.get_soup(main_url=self.main_url, remove_imports=False)
 
         # base info
         quote_header = self.soup.find('div', class_='quote-header')
@@ -244,3 +254,4 @@ class Quote:
             ticker, statement_timeframe, api_key=api_key)
         self.insider_trading_df = Quote.__get_insider_trading_df__(self.soup)
         self.stockwits_news_df = Quote.__get_stockwits_news_df__(self.ticker)
+        self.managers_and_funds_df = Quote.__get_managers_and_funds_df__(self.soup)

@@ -37,6 +37,7 @@ class TestQuote(TestCase):
         self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
         self.assertIsNotNone(quote.stockwits_news_df)
         self.assertGreater(len(quote.stockwits_news_df), 0)
+        self.assertIsNotNone(quote.managers_and_funds_df)
 
     def test_main_META(self):
         quote = Quote('META')
@@ -74,6 +75,7 @@ class TestQuote(TestCase):
         self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
         self.assertIsNotNone(quote.stockwits_news_df)
         self.assertGreater(len(quote.stockwits_news_df), 0)
+        self.assertIsNotNone(quote.managers_and_funds_df)
 
     def test_main_NNDM(self):
         quote = Quote('NNDM')
@@ -110,6 +112,7 @@ class TestQuote(TestCase):
         self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
         self.assertIsNotNone(quote.stockwits_news_df)
         self.assertGreater(len(quote.stockwits_news_df), 0)
+        self.assertIsNotNone(quote.managers_and_funds_df)
 
     def test_main_CGC(self):
         quote = Quote('CGC')
@@ -146,6 +149,7 @@ class TestQuote(TestCase):
         self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
         self.assertIsNotNone(quote.stockwits_news_df)
         self.assertGreater(len(quote.stockwits_news_df), 0)
+        self.assertIsNone(quote.managers_and_funds_df)
 
     def test_main_NOW(self):
         quote = Quote('NOW')
@@ -182,6 +186,7 @@ class TestQuote(TestCase):
         self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
         self.assertIsNotNone(quote.stockwits_news_df)
         self.assertGreater(len(quote.stockwits_news_df), 0)
+        self.assertIsNotNone(quote.managers_and_funds_df)
 
     def test_main_DOESNOTEXIST1(self):
         quote = Quote('DOESNOTEXIST1')
@@ -205,3 +210,4 @@ class TestQuote(TestCase):
         self.assertRaises(AttributeError, lambda: quote.balance_sheet_df)
         self.assertRaises(AttributeError, lambda: quote.cash_flow_df)
         self.assertRaises(AttributeError, lambda: quote.stockwits_news_df)
+        self.assertRaises(AttributeError, lambda: quote.managers_and_funds_df)
