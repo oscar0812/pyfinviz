@@ -131,25 +131,25 @@ class Quote:
     @staticmethod
     def __get_insider_trading_df__(soup):
         insider_trading_table = soup.find('table', class_="body-table")
-        # might not have insider trading
-        if insider_trading_table is None:
+        if not insider_trading_table:
             return None
 
-        insider_trading_trs = insider_trading_table.find_all('tr', recursive=False)
-        insider_trading_info = []
+        headers = [th.text.strip() for th in
+                   insider_trading_table.select_one('thead > tr').find_all('th', recursive=False)]
+        headers.insert(1, 'Insider History URL')
+        headers.append('SEC Form 4 URL')
 
-        tags__ = [td.text.strip() for td in insider_trading_trs[0].find_all('td')]
-        tags__.insert(1, 'Insider History URL')
-        tags__.append('SEC Form 4 URL')
-        for tr in insider_trading_trs[1:]:
-            tds = tr.find_all('td', recursive=False)
-            info_ = [td.text.strip() for td in tds]
-            info_.insert(1, f"https://finviz.com/{tds[0].find('a')['href']}")
-            info_.append(tds[len(tds) - 1].find('a')['href'])
+        data = []
+        for row in insider_trading_table.find_all('tr', recursive=False):
+            tds = row.find_all('td', recursive=False)
+            if not tds:
+                continue
+            row_data = [td.text.strip() for td in tds]
+            row_data.insert(1, f"https://finviz.com/{tds[0].find('a')['href']}")
+            row_data.append(tds[-1].find('a')['href'])
+            data.append(dict(zip(headers, row_data)))
 
-            insider_trading_info.append({tags__[i]: info_[i] for i in range(0, len(tags__))})
-
-        return pd.DataFrame(insider_trading_info)
+        return pd.DataFrame(data)
 
     def __init__(self, ticker="META", api_key=None):
         self.main_url = f'{get_url(path="quote", api_key=api_key)}t={ticker}'
@@ -165,6 +165,7 @@ class Quote:
 
         self.ticker = quote_header.find('h1').text.strip()
         self.company_name = quote_header.find('h2').text.strip()
+        self.profile_bio = self.soup.find('div', class_='quote_profile-bio').text.strip()
 
         sector_tags = self.soup.find('div', class_='quote-links').find('div').find_all('a', recursive=False)
         sectors_arr = [x.text.strip() for x in sector_tags]  # ['Consumer Cyclical', ..., 'NASD']
