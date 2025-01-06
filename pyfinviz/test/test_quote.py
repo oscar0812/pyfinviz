@@ -25,11 +25,14 @@ class TestQuote(TestCase):
         self.assertGreater(len(quote.outer_news_df), 0)
         self.assertGreater(quote.income_statement_df.columns.size, 0)
         self.assertEqual(8, len(quote.income_statement_df))
+        self.assertEqual('Period End Date', quote.income_statement_df.columns.tolist()[0])
         self.assertEqual(11, quote.insider_trading_df.columns.size)
         self.assertEqual(39, quote.balance_sheet_df.columns.size)
         self.assertEqual(8, len(quote.balance_sheet_df))
+        self.assertEqual('Period End Date', quote.balance_sheet_df.columns.tolist()[0])
         self.assertEqual(36, quote.cash_flow_df.columns.size)
         self.assertEqual(8, len(quote.cash_flow_df))
+        self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
 
     def test_main_META(self):
         quote = Quote('META')
@@ -51,6 +54,7 @@ class TestQuote(TestCase):
         self.assertGreater(len(quote.outer_news_df), 0)
         self.assertGreater(quote.income_statement_df.columns.size, 0)
         self.assertEqual(8, len(quote.income_statement_df))
+        self.assertEqual('Period End Date', quote.income_statement_df.columns.tolist()[0])
         self.assertEqual(11, quote.insider_trading_df.columns.size)
         self.assertEqual(100, len(quote.insider_trading_df))
         self.assertEqual(['Insider Trading', 'Insider History URL', 'Relationship', 'Date', 'Transaction', 'Cost',
@@ -58,8 +62,10 @@ class TestQuote(TestCase):
                          quote.insider_trading_df.columns.tolist())
         self.assertEqual(39, quote.balance_sheet_df.columns.size)
         self.assertEqual(8, len(quote.balance_sheet_df))
+        self.assertEqual('Period End Date', quote.balance_sheet_df.columns.tolist()[0])
         self.assertEqual(36, quote.cash_flow_df.columns.size)
         self.assertEqual(8, len(quote.cash_flow_df))
+        self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
 
     def test_main_NNDM(self):
         quote = Quote('NNDM')
@@ -81,14 +87,17 @@ class TestQuote(TestCase):
         self.assertGreater(len(quote.outer_news_df), 0)
         self.assertGreater(quote.income_statement_df.columns.size, 0)
         self.assertEqual(8, len(quote.income_statement_df))
+        self.assertEqual('Period End Date', quote.income_statement_df.columns.tolist()[0])
         self.assertIsNotNone(quote.insider_trading_df)
         self.assertEqual(['Insider Trading', 'Insider History URL', 'Relationship', 'Date', 'Transaction', 'Cost',
                           '#Shares', 'Value ($)', '#Shares Total', 'SEC Form 4', 'SEC Form 4 URL'],
                          quote.insider_trading_df.columns.tolist())
         self.assertEqual(39, quote.balance_sheet_df.columns.size)
         self.assertEqual(8, len(quote.balance_sheet_df))
+        self.assertEqual('Period End Date', quote.balance_sheet_df.columns.tolist()[0])
         self.assertEqual(36, quote.cash_flow_df.columns.size)
         self.assertEqual(8, len(quote.cash_flow_df))
+        self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
 
     def test_main_CGC(self):
         quote = Quote('CGC')
@@ -110,14 +119,17 @@ class TestQuote(TestCase):
         self.assertGreater(len(quote.outer_news_df), 0)
         self.assertGreater(quote.income_statement_df.columns.size, 0)
         self.assertEqual(8, len(quote.income_statement_df))
+        self.assertEqual('Period End Date', quote.income_statement_df.columns.tolist()[0])
         self.assertEqual(11, quote.insider_trading_df.columns.size)
         self.assertEqual(['Insider Trading', 'Insider History URL', 'Relationship', 'Date', 'Transaction', 'Cost',
                           '#Shares', 'Value ($)', '#Shares Total', 'SEC Form 4', 'SEC Form 4 URL'],
                          quote.insider_trading_df.columns.tolist())
         self.assertEqual(39, quote.balance_sheet_df.columns.size)
         self.assertEqual(8, len(quote.balance_sheet_df))
+        self.assertEqual('Period End Date', quote.balance_sheet_df.columns.tolist()[0])
         self.assertEqual(36, quote.cash_flow_df.columns.size)
         self.assertEqual(8, len(quote.cash_flow_df))
+        self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
 
     def test_main_NOW(self):
         quote = Quote('NOW')
@@ -139,14 +151,17 @@ class TestQuote(TestCase):
         self.assertGreater(len(quote.outer_news_df), 0)
         self.assertGreater(quote.income_statement_df.columns.size, 0)
         self.assertEqual(8, len(quote.income_statement_df))
+        self.assertEqual('Period End Date', quote.income_statement_df.columns.tolist()[0])
         self.assertEqual(11, quote.insider_trading_df.columns.size)
         self.assertEqual(['Insider Trading', 'Insider History URL', 'Relationship', 'Date', 'Transaction', 'Cost',
                           '#Shares', 'Value ($)', '#Shares Total', 'SEC Form 4', 'SEC Form 4 URL'],
                          quote.insider_trading_df.columns.tolist())
         self.assertEqual(39, quote.balance_sheet_df.columns.size)
         self.assertEqual(8, len(quote.balance_sheet_df))
+        self.assertEqual('Period End Date', quote.balance_sheet_df.columns.tolist()[0])
         self.assertEqual(36, quote.cash_flow_df.columns.size)
         self.assertEqual(8, len(quote.cash_flow_df))
+        self.assertEqual('Period End Date', quote.cash_flow_df.columns.tolist()[0])
 
     def test_main_DOESNOTEXIST1(self):
         quote = Quote('DOESNOTEXIST1')
