@@ -4,6 +4,7 @@ from datetime import datetime
 
 import bs4
 import pandas as pd
+import requests
 
 from pyfinviz.base_url import get_url
 from pyfinviz.utils import WebScraper
@@ -156,6 +157,37 @@ class Quote:
 
         return pd.DataFrame(data)
 
+    @staticmethod
+    def __get_stockwits_news_df__(ticker="AMZN"):
+        limit = 25
+        url = f"https://api.stocktwits.com/widgets/stream?domain=finviz.com&limit={limit}&symbol={ticker}"
+        soup = WebScraper.get_soup(url)
+        messages_ul = soup.find('ul', class_='messages')
+        if not messages_ul:
+            print("No stockwits messages found in the HTML.")
+        messages_data = []
+        for li in messages_ul.find_all('li', class_='message', recursive=False):
+            message_id = li['id'].replace('message-', '')
+            username = li.find('a', class_='username').text.strip()
+            user_profile_url = li.find('a', class_='username')['href']
+            time = li.find('span', class_='time').text.strip()
+            body_element = li.find('span', class_='body')
+            body = body_element.text.strip()
+            body_links = [a['href'] for a in body_element.find_all('a', href=True)]
+            avatar_img = li.find('a', class_='avatar').find('img')['src']
+            convo_link = li.find('a', class_='convo-contain')['href']
+            messages_data.append({
+                'Message ID': message_id,
+                'Username': username,
+                'User Profile URL': user_profile_url,
+                'Time': time,
+                'Message Body': body,
+                'Body Links': body_links,
+                'Avatar Image URL': avatar_img,
+                'Conversation URL': convo_link,
+            })
+        return pd.DataFrame(messages_data)
+
     def __init__(self, ticker="META", statement_timeframe: Timeframe = Timeframe.ANNUAL, api_key=None):
         self.main_url = f'{get_url(path="quote", api_key=api_key)}t={ticker}'
         self.soup = WebScraper.get_soup(main_url=self.main_url)
@@ -194,3 +226,4 @@ class Quote:
         self.income_statement_df, self.balance_sheet_df, self.cash_flow_df, self.reuters_income_statement_df, self.reuters_balance_sheet_df, self.reuters_cash_flow_df = Quote.__get_XHR_requests__(
             ticker, statement_timeframe, api_key=api_key)
         self.insider_trading_df = Quote.__get_insider_trading_df__(self.soup)
+        self.stockwits_news_df = Quote.__get_stockwits_news_df__(self.ticker)

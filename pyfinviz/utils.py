@@ -45,7 +45,7 @@ class WebScraper:
     @staticmethod
     def get_single_table_pandas(main_url):
         soup = WebScraper.get_soup(main_url)
-        main_table = soup.find("table", {'class': 'styled-table-new'})
+        main_table = soup.find("table", class_='styled-table-new')
         if main_table is None:
             return soup, pd.DataFrame()
         main_table_rows = main_table.find_all("tr")

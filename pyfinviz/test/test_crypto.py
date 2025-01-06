@@ -28,7 +28,7 @@ class TestCrypto(TestCase):
         crypto = Crypto(relative_performance_option=Crypto.RelativePerformanceOption.YEAR_TO_DATE)
 
         self.assertIsNotNone(crypto)
-        self.assertEqual('https://finviz.com/crypto_performance.ashx?v=7', crypto.main_url)
+        self.assertEqual('https://finviz.com/crypto_performance.ashx?v=7&C=USD', crypto.main_url)
         self.assertIsNotNone(crypto.soup)
         self.assertIsNotNone(crypto.table_df)
         self.assertEqual(['No', 'Ticker', 'Price', 'Perf5Min', 'PerfHour', 'PerfDay', 'PerfWeek', 'PerfMonth',
