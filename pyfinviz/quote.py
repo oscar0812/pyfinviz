@@ -4,7 +4,6 @@ from datetime import datetime
 
 import bs4
 import pandas as pd
-import requests
 
 from pyfinviz.base_url import get_url
 from pyfinviz.utils import WebScraper
@@ -219,6 +218,24 @@ class Quote:
         except (AttributeError, ValueError) as e:
             print(f"Error parsing price: {e}")
             self.price = None
+
+        try:
+            dollar_td = price_div.find('table', class_='quote-price_wrapper_change').find('td')
+            dollar_change_text = ''.join(dollar_td.findAll(text=True, recursive=False)).strip()
+            self.dollar_change = float(dollar_change_text.replace(',', '').replace('+', '').replace('-', '')) * (
+                -1 if '-' in dollar_change_text else 1)
+        except (AttributeError, ValueError) as e:
+            print(f"Error parsing dollar change: {e}")
+            self.dollar_change = None
+
+        try:
+            percentage_change_td = price_div.find('table', class_='quote-price_wrapper_change').find_all('tr')[
+                1].find('td')
+            percentage_change_text = ''.join(percentage_change_td.findAll(text=True, recursive=False)).strip()
+            self.percentage_change = float(percentage_change_text.replace('%', '').strip())
+        except (AttributeError, ValueError) as e:
+            print(f"Error parsing percentage change: {e}")
+            self.percentage_change = None
 
         self.fundamental_df = Quote.__get_fundamental_df__(self.soup)
         self.outer_ratings_df = Quote.__get_outer_ratings_df__(self.soup)
